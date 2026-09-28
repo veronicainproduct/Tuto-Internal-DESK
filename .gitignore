@@ -1,0 +1,10 @@
+# installed tools (reinstall with: cd app && npm install)
+node_modules/
+.wrangler/
+mobile/www/
+# secrets and local-only files — never upload
+.dev.vars
+.env
+.env.*
+.vapid-public.txt
+.claude/

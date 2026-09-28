@@ -1,0 +1,226 @@
+<title>TUTO Desk Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Quicksand:wght@600;700&display=swap">
+<style>
+  :root {
+    --bg: #EEEEF1; --surface: #FFFFFF; --soft: #F4F4F7; --ink: #1D1B22; --muted: #66647A; --line: #E2E1E8;
+    --blue: #A3B5F7; --lilac: #E7A6F4; --orange: #F3983E; --plum: #C8BCF2; --mint: #9ED9B5; --teal: #15515C; --on: #1D1B22;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #141318; --surface: #1F1D25; --soft: #28262F; --ink: #F0EEF5; --muted: #A09DAD; --line: #32303A;
+      --blue: #8CA0F0; --lilac: #D694E8; --orange: #EC8C34; --plum: #AE9EE6; --mint: #78C498; --teal: #6EC8D0;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #141318; --surface: #1F1D25; --soft: #28262F; --ink: #F0EEF5; --muted: #A09DAD; --line: #32303A;
+    --blue: #8CA0F0; --lilac: #D694E8; --orange: #EC8C34; --plum: #AE9EE6; --mint: #78C498; --teal: #6EC8D0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 Onest, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 36px 96px; }
+  h1, h2, .n, .badge { font-family: Quicksand, Onest, ui-rounded, system-ui, sans-serif; font-weight: 700; text-wrap: balance; }
+  h1 { font-size: 34px; line-height: 1.1; margin: 0; }
+  .lede { color: var(--muted); margin: 10px 0 0; max-width: 60ch; }
+  .status { margin-top: 22px; background: var(--surface); border-radius: 24px; padding: 18px 20px; display: grid; gap: 10px; }
+  .row { display: flex; gap: 12px; align-items: flex-start; }
+  .mark { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 700; font-size: 14px; color: var(--on); margin-top: 1px; }
+  .done { background: var(--mint); } .todo { background: var(--orange); }
+  .row small { color: var(--muted); display: block; }
+  section { margin-top: 40px; scroll-margin-top: 16px; }
+  .head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .badge { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--on); flex: none; }
+  .head h2 { font-size: 24px; margin: 0; flex: 1; }
+  .time { color: var(--muted); font-size: 14px; white-space: nowrap; }
+  ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  ol.steps > li { background: var(--surface); border-radius: 22px; padding: 16px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 12px; }
+  .n { width: 34px; height: 34px; border-radius: 50%; background: var(--soft); display: grid; place-items: center; font-size: 13px; }
+  li b.t { display: block; font-weight: 600; margin-top: 5px; }
+  li p { margin: 6px 0 0; }
+  li ul { margin: 8px 0 0; padding-left: 20px; }
+  li ul li { margin: 4px 0; }
+  .ui { font-weight: 600; background: var(--soft); border: 1px solid var(--line); padding: 1px 7px; border-radius: 7px; font-size: 14.5px; white-space: nowrap; }
+  code { font: 500 13.5px ui-monospace, SFMono-Regular, Consolas, monospace; background: var(--soft); padding: 2px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+  pre { background: var(--soft); border-radius: 14px; padding: 12px 14px; overflow-x: auto; margin: 8px 0 0; font: 500 13.5px/1.55 ui-monospace, Consolas, monospace; white-space: pre-wrap; }
+  .see { margin-top: 8px; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--mint) 32%, transparent); font-size: 14.5px; }
+  .see::before { content: "You should see: "; font-weight: 600; }
+  .warn { margin-top: 8px; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--orange) 25%, transparent); font-size: 14.5px; }
+  .card { background: var(--surface); border-radius: 22px; padding: 18px; }
+  .tbl { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14.5px; }
+  th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; }
+  a { color: var(--teal); }
+  .B1 { background: var(--lilac); } .B2 { background: var(--blue); } .B3 { background: var(--orange); } .B4 { background: var(--mint); } .B5 { background: var(--plum); }
+  @media (max-width: 520px) { ol.steps > li { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap">
+  <h1>Finish TUTO Desk setup</h1>
+  <p class="lede">For Veronica only, about 25 minutes. When you're done, teammates only have to open the link and tap <b>Continue with Google</b>. Their calls, reminders and WhatsApp nudges are handled automatically.</p>
+
+  <div class="status" aria-label="Progress">
+    <div class="row"><span class="mark done">✓</span><div>Backend created, app connected, site live<small>Already done.</small></div></div>
+    <div class="row"><span class="mark done">✓</span><div>Backend updated to the new version<small>Checked: it answers correctly.</small></div></div>
+    <div class="row"><span class="mark todo">2</span><div>Turn on "Continue with Google"<small>One-time Google Cloud setup. This is what makes calendars connect automatically.</small></div></div>
+    <div class="row"><span class="mark todo">3</span><div>Fill in the Team tab<small>Emails, names, WhatsApp numbers.</small></div></div>
+    <div class="row"><span class="mark todo">4</span><div>Upload the folder, test, invite</div></div>
+  </div>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="head"><span class="badge B1">1</span><h2>Fix the error and update the backend</h2><span class="time">5 min</span></div>
+    <ol class="steps">
+      <li><span class="n">1.1</span><div><b class="t">Delete the old Code.gs</b>
+        <p>In your Apps Script project (<a href="https://script.google.com/home" target="_blank" rel="noopener">script.google.com/home</a> → <b>Tuto Desk</b>), point at <code>Code.gs</code> in the Files list and click its <span class="ui">⋮</span> menu, then <span class="ui">Delete</span>, then <span class="ui">Delete forever</span>.</p>
+        <p>Do the same for <code>index.html</code>. The backend doesn't need it; that file lives on Netlify.</p>
+        <p class="see">Only <code>appsscript.json</code> is left in the Files list.</p></div></li>
+      <li><span class="n">1.2</span><div><b class="t">Create a fresh Code.gs</b>
+        <ul>
+          <li>Click the <span class="ui">+</span> next to <b>Files</b>, choose <span class="ui">Script</span>, type <code>Code</code> and press Enter.</li>
+          <li>The new file has a few lines of sample code. Click inside it, press <span class="ui">Ctrl+A</span>, then <span class="ui">Delete</span>.</li>
+          <li>On your Desktop, open the <code>Tuto Desk</code> folder. Right-click <code>Code.gs</code>, choose <span class="ui">Open with → Notepad</span>, then press <span class="ui">Ctrl+A</span> and <span class="ui">Ctrl+C</span>.</li>
+          <li>Back in Apps Script, click inside the empty file and press <span class="ui">Ctrl+V</span>, then <span class="ui">Ctrl+S</span>.</li>
+        </ul>
+        <p class="see">The file ends at about line <b>808</b>. Scroll to the bottom to check. The words <code>const PROPS</code> appear only once (press <span class="ui">Ctrl+F</span> and search to confirm). "Unsaved changes" at the top has gone.</p></div></li>
+      <li><span class="n">1.3</span><div><b class="t">Run setup</b>
+        <p>Choose <code>setup</code> in the function dropdown next to <span class="ui">Debug</span> and click <span class="ui">▷ Run</span>. If Google asks for permission: click <span class="ui">Review permissions</span>, choose your Gmail, click <span class="ui">Advanced</span>, then <span class="ui">Go to Tuto Desk (unsafe)</span>, tick <b>Select all</b> and click <span class="ui">Allow</span>.</p>
+        <p class="see"><code>Done. Data sheet: https://docs.google.com/…</code> in the Execution log. Copy that link; you'll need it in part 3.</p></div></li>
+      <li><span class="n">1.4</span><div><b class="t">Publish the new version (same link)</b>
+        <ul>
+          <li>Click <span class="ui">Deploy</span>, then <span class="ui">Manage deployments</span>.</li>
+          <li>Click the <span class="ui">✎</span> pencil (top right). Under <b>Version</b>, choose <span class="ui">New version</span>.</li>
+          <li>Click <span class="ui">Deploy</span>, then <span class="ui">Done</span>.</li>
+        </ul>
+        <p class="warn">Don't use <b>New deployment</b>. That creates a new link and the app would lose its connection.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="head"><span class="badge B2">2</span><h2>Turn on "Continue with Google"</h2><span class="time">10 min, once</span></div>
+    <p class="lede" style="margin:0 0 12px">This lets teammates sign in with one tap. The same tap gives the app read-only access to their own calendar, so nobody has to connect anything. Do all of this signed in as <code>veronica.singh2525@gmail.com</code>.</p>
+    <ol class="steps">
+      <li><span class="n">2.1</span><div><b class="t">Create a Google Cloud project</b>
+        <p>Open <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com/projectcreate</a>. Set Project name to <code>TUTO Desk</code> and click <span class="ui">Create</span>. When the notification bell says it's ready, click <span class="ui">Select project</span>.</p></div></li>
+      <li><span class="n">2.2</span><div><b class="t">Set up the sign-in screen</b>
+        <p>Open <a href="https://console.cloud.google.com/auth/overview" target="_blank" rel="noopener">Google Auth Platform</a> (check <b>TUTO Desk</b> is the project shown at the top) and click <span class="ui">Get started</span>:</p>
+        <ul>
+          <li><b>App information</b>: App name <code>TUTO Desk</code>, User support email: your Gmail. Click <span class="ui">Next</span>.</li>
+          <li><b>Audience</b>: choose <span class="ui">External</span>. Click <span class="ui">Next</span>.</li>
+          <li><b>Contact information</b>: your Gmail. Click <span class="ui">Next</span>.</li>
+          <li>Tick the agreement, then click <span class="ui">Continue</span> and <span class="ui">Create</span>.</li>
+          <li>Click <span class="ui">Branding</span> on the left and fill in <b>App domain</b>. All three links are required before Google lets you publish:
+            <div class="tbl" style="margin-top:6px"><table>
+              <tr><td>Application home page</td><td><code>https://tutodesk.netlify.app/about.html</code> (the public page, not the sign-in screen)</td></tr>
+              <tr><td>Application privacy policy link</td><td><code>https://tutodesk.netlify.app/privacy.html</code></td></tr>
+              <tr><td>Application Terms of Service link</td><td><code>https://tutodesk.netlify.app/terms.html</code></td></tr>
+            </table></div></li>
+          <li>Under <b>Authorised domains</b>, type <code>tutodesk.netlify.app</code>: <b>just the domain</b>, with no <code>https://</code> and no <code>/</code>. Click <span class="ui">Save</span>.</li>
+        </ul>
+        <p class="warn">Upload the latest <code>Tuto Desk</code> folder to Netlify first (step 4.1), so the privacy and terms pages exist.</p>
+        <p class="warn">"Invalid domain: must not specify the scheme" means you typed <code>https://</code>. Remove it and the trailing <code>/</code>.</p></div></li>
+      <li><span class="n">2.2b</span><div><b class="t">If "Branding verification issues" appears</b>
+        <p><b>Try this first (2 min):</b> on the Branding page, <b>clear</b> the three App domain links (home page, privacy, terms). Keep <code>tutodesk.netlify.app</code> under Authorised domains. Click <span class="ui">Save</span>, then go to <span class="ui">Audience → Publish app</span>. Without these links, Google doesn't run the branding check, and the app works the same (users see a one-time "unverified app" notice).</p>
+        <p><b>If Publish app is still greyed out, do the full fix:</b></p>
+        <ul>
+          <li><b>Prove you own the site.</b> Open <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a> (signed in as your Gmail) → <span class="ui">Add property</span> → the right-hand <b>URL prefix</b> box → <code>https://tutodesk.netlify.app/</code> → <span class="ui">Continue</span>. Under <b>HTML file</b>, click the download button. Move the downloaded <code>google….html</code> file from Downloads into your <code>Tuto Desk</code> folder, upload the folder to Netlify again, then click <span class="ui">Verify</span> in Search Console.</li>
+          <li><b>Fill in the links</b> using the table above. The home page must be <code>/about.html</code>, a public page that explains the app without a login. Click <span class="ui">Save</span>.</li>
+          <li>In the <b>Branding verification issues</b> panel, choose <span class="ui">I have fixed the issues</span>, then <span class="ui">Proceed</span>. Google re-checks, usually within a few days. Then <span class="ui">Audience → Publish app</span>.</li>
+        </ul></div></li>
+      <li><span class="n">2.3</span><div><b class="t">Enable the Calendar API</b>
+        <p>Open <a href="https://console.cloud.google.com/apis/library/calendar-json.googleapis.com" target="_blank" rel="noopener">Google Calendar API</a> and click <span class="ui">Enable</span>.</p></div></li>
+      <li><span class="n">2.4</span><div><b class="t">Allow read-only calendar access</b>
+        <p>In Google Auth Platform, click <span class="ui">Data access</span> on the left, then <span class="ui">Add or remove scopes</span>. In the filter box, type <code>calendar.readonly</code>, tick the row <code>…/auth/calendar.readonly</code>, click <span class="ui">Update</span>, then <span class="ui">Save</span> at the bottom.</p></div></li>
+      <li><span class="n">2.5</span><div><b class="t">Create the web client</b>
+        <p>Click <span class="ui">Clients</span> on the left, then <span class="ui">+ Create client</span>:</p>
+        <ul>
+          <li>Application type: <span class="ui">Web application</span>. Name: <code>TUTO Desk web</code>.</li>
+          <li>Under <b>Authorized JavaScript origins</b>, click <span class="ui">+ Add URI</span> and enter <code>https://tutodesk.netlify.app</code>, with no slash at the end.</li>
+          <li>Leave "Authorized redirect URIs" empty. Click <span class="ui">Create</span>.</li>
+          <li>A box shows the <b>Client ID</b> and <b>Client secret</b>. Copy both into a note now; the secret is shown only once. You can also click <span class="ui">Download JSON</span>.</li>
+        </ul></div></li>
+      <li><span class="n">2.6</span><div><b class="t">Publish the app</b>
+        <p>Click <span class="ui">Audience</span> on the left, then <span class="ui">Publish app</span>, then <span class="ui">Confirm</span>.</p>
+        <p class="see">Publishing status: <b>In production</b>.</p>
+        <p class="warn">Don't skip this. In "Testing" mode, Google cuts calendar access every 7 days and people would have to sign in again. You don't need to submit for verification, which only matters above 100 users. Teammates will see a one-time "unverified app" notice; the join page tells them what to tap.</p></div></li>
+      <li><span class="n">2.7</span><div><b class="t">Give the IDs to the backend</b>
+        <p>In Apps Script, go to <span class="ui">Project Settings</span> (gear) → <b>Script Properties</b> → <span class="ui">Add script property</span>, and add two rows:</p>
+        <div class="tbl"><table>
+          <tr><th>Property</th><th>Value</th></tr>
+          <tr><td><code>GOOGLE_CLIENT_ID</code></td><td>the Client ID (ends in <code>.apps.googleusercontent.com</code>)</td></tr>
+          <tr><td><code>GOOGLE_CLIENT_SECRET</code></td><td>the Client secret (starts with <code>GOCSPX-</code>)</td></tr>
+        </table></div>
+        <p>Click <span class="ui">Save script properties</span>. No redeploy is needed.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="head"><span class="badge B3">3</span><h2>Fill in the Team tab</h2><span class="time">3 min</span></div>
+    <ol class="steps">
+      <li><span class="n">3.1</span><div><b class="t">Open the data sheet</b>
+        <p>Open the link from step 1.3, or find <b>TUTO Desk — data</b> in <a href="https://drive.google.com" target="_blank" rel="noopener">Google Drive</a>. Click the <b>Team</b> tab at the bottom (it's first).</p></div></li>
+      <li><span class="n">3.2</span><div><b class="t">One row per person</b>
+        <div class="tbl"><table>
+          <tr><th>Email</th><th>Name</th><th>WhatsApp (with +91)</th></tr>
+          <tr><td>the Google account they sign in with</td><td>Riya Mehta</td><td>+91 98765 43210</td></tr>
+        </table></div>
+        <p>Add a row for yourself too, with the account you'll sign in with (your work Google account, if that's where your calls are). The sheet saves by itself.</p>
+        <p class="see">Only people on this tab can sign in. Their WhatsApp number is used for nudges automatically, and their name shows in the app. <code>@</code>-tag them by first name, e.g. <code>@riya</code>.</p>
+        <p class="warn">Other tabs (Tasks, Users…) are the app's database. Don't edit them by hand.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="head"><span class="badge B4">4</span><h2>Upload, test, invite</h2><span class="time">5 min</span></div>
+    <ol class="steps">
+      <li><span class="n">4.1</span><div><b class="t">Upload the folder to Netlify</b>
+        <p>Go to <a href="https://app.netlify.com" target="_blank" rel="noopener">app.netlify.com</a> → <b>tutodesk</b> → <span class="ui">Deploys</span>, and drag the <code>Tuto Desk</code> folder from your Desktop onto the drop box.</p>
+        <p class="see">A new deploy marked <b>Published</b>.</p></div></li>
+      <li><span class="n">4.2</span><div><b class="t">Sign in yourself</b>
+        <p>Open <a href="https://tutodesk.netlify.app" target="_blank" rel="noopener">tutodesk.netlify.app</a> and press <span class="ui">Ctrl+Shift+R</span>. Tap <span class="ui">Continue with Google</span>, choose your account, then <span class="ui">Advanced → Go to TUTO Desk</span>, keep the calendar box ticked and click <span class="ui">Continue</span>.</p>
+        <p class="see">"Hi, Veronica", today's calls under the date strip, and an empty task list.</p></div></li>
+      <li><span class="n">4.3</span><div><b class="t">Quick test</b>
+        <p>Tap <span class="ui">+</span> → <code>Test task @me tomorrow</code> → <span class="ui">Add task</span>. Then tap your initials → <span class="ui">Test nudge</span>, and check the bell.</p></div></li>
+      <li><span class="n">4.4</span><div><b class="t">Invite the team: send this</b>
+        <pre>Hi! Our tasks are now on TUTO Desk.
+Open https://tutodesk.netlify.app → tap "Continue with Google" → pick your work account → Allow.
+That's it. Your calls and reminders set themselves up.
+Help: https://tutodesk.netlify.app/join.html</pre></div></li>
+    </ol>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="head"><span class="badge B5">5</span><h2>Real WhatsApp delivery <span style="font-size:14px;color:var(--muted);font-family:Onest">· when you're ready</span></h2></div>
+    <div class="card">
+      <p style="margin:0">Nudges already go to each person's number from the Team tab, but until a WhatsApp provider is connected they appear only under the bell, marked "Preview". To send real messages:</p>
+      <ol style="margin:10px 0 0;padding-left:20px;display:grid;gap:6px">
+        <li>Sign up with a WhatsApp provider. <b>Interakt</b> is the easiest in India. You'll need a number that isn't already on WhatsApp.</li>
+        <li>Create a <b>Utility</b> template named <code>tuto_desk_alert</code> with the body <code>TUTO Desk: {{1}}</code>, then wait for approval (1–3 days).</li>
+        <li>Add these Script Properties: <code>WA_PROVIDER</code> = <code>interakt</code>, <code>INTERAKT_KEY</code> = your API key, <code>WA_TEMPLATE</code> = <code>tuto_desk_alert</code>.</li>
+        <li>In the app, go to Settings and tap <span class="ui">Test nudge</span>.</li>
+      </ol>
+      <p style="margin:10px 0 0;color:var(--muted);font-size:14.5px">Teammates don't do anything for this either.</p>
+    </div>
+  </section>
+
+  <!-- fixes -->
+  <section id="fix">
+    <div class="head"><span class="badge B1">?</span><h2>If something's off</h2></div>
+    <div class="card tbl"><table>
+      <tr><th>You see</th><th>Do this</th></tr>
+      <tr><td>"Identifier … has already been declared"</td><td>Code.gs has two copies. Redo 1.1–1.2: delete the file and create a fresh one.</td></tr>
+      <tr><td>"The backend isn't ready yet"</td><td>Step 1.4 (<b>New version</b>) hasn't been done yet.</td></tr>
+      <tr><td>No "Continue with Google" button, only the email box</td><td>Check step 2.7: both properties saved, with no spaces. Then reload the site.</td></tr>
+      <tr><td>Google says "redirect_uri_mismatch" or "origin not allowed"</td><td>Step 2.5: the origin must be exactly <code>https://tutodesk.netlify.app</code>.</td></tr>
+      <tr><td>A teammate sees "Access blocked: your admin…"</td><td>Their company account (e.g. pw.live) blocks outside apps. They tap <b>Use an email code instead</b>. To get their calendar too, ask IT to allow the app using your Client ID.</td></tr>
+      <tr><td>"Isn't on the team"</td><td>Add the exact email they chose in the Google window to the Team tab.</td></tr>
+      <tr><td>Calls don't show</td><td>They unticked the calendar box. In the app: Settings → <b>Connect Google Calendar</b>.</td></tr>
+    </table></div>
+  </section>
+</div>

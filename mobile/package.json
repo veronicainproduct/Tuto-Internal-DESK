@@ -1,0 +1,19 @@
+{
+  "name": "tuto-desk-mobile",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TUTO Desk as an Android app (same code as the web app).",
+  "scripts": {
+    "web": "node copy-web.js",
+    "setup:android": "npm run web && npx cap add android && npx capacitor-assets generate --android",
+    "android": "npm run web && npx cap sync android && npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.2"
+  }
+}

@@ -1,0 +1,1292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TUTO Desk</title>
+<!-- pwa -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#EEEEF1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141318" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TUTO Desk">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!-- /pwa -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: Object.fromEntries(['bg','surface','soft','ink','muted','line','blue','lilac','orange','plum','mint','teal','teal-ink','late']
+      .map(k => [k, `rgb(var(--${k}) / <alpha-value>)`])),
+    fontFamily: {
+      sans: ['Onest', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+      round: ['Quicksand', 'Onest', 'ui-rounded', 'system-ui', 'sans-serif'],
+    },
+  } } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<style>
+  :root {
+    --bg: 238 238 241; --surface: 255 255 255; --soft: 245 245 248; --ink: 29 27 34; --muted: 112 110 124; --line: 226 225 232;
+    --blue: 163 181 247; --lilac: 231 166 244; --orange: 243 152 62; --plum: 200 188 242; --mint: 158 217 181;
+    --teal: 21 81 92; --teal-ink: 255 255 255; --late: 206 67 46; --on-pastel: 29 27 34;
+    --shadow: 0 1px 2px rgb(29 27 34 / .04), 0 10px 30px -14px rgb(29 27 34 / .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: 20 19 24; --surface: 31 29 37; --soft: 40 38 47; --ink: 240 238 245; --muted: 160 157 173; --line: 50 48 58;
+      --blue: 140 160 240; --lilac: 214 148 232; --orange: 236 140 52; --plum: 174 158 230; --mint: 120 196 152;
+      --teal: 110 200 208; --teal-ink: 20 19 24; --late: 244 120 98;
+      --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 14px 34px -14px rgb(0 0 0 / .7);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: 20 19 24; --surface: 31 29 37; --soft: 40 38 47; --ink: 240 238 245; --muted: 160 157 173; --line: 50 48 58;
+    --blue: 140 160 240; --lilac: 214 148 232; --orange: 236 140 52; --plum: 174 158 230; --mint: 120 196 152;
+    --teal: 110 200 208; --teal-ink: 20 19 24; --late: 244 120 98;
+    --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 14px 34px -14px rgb(0 0 0 / .7);
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: rgb(var(--bg)); color: rgb(var(--ink)); font-family: Onest, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 15px; -webkit-font-smoothing: antialiased; }
+  [x-cloak] { display: none !important; }
+  button, [role="button"] { cursor: pointer; touch-action: manipulation; }
+  .app, .app * { transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity; transition-duration: .2s; }
+  .round { font-family: Quicksand, Onest, ui-rounded, system-ui, sans-serif; }
+  .num { font-variant-numeric: tabular-nums; }
+  h1, h2 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid rgb(var(--teal)); outline-offset: 2px; }
+  ::selection { background: rgb(var(--lilac) / .45); }
+  .safe-top { padding-top: env(safe-area-inset-top, 0px); }
+
+  .ibtn { width: 44px; height: 44px; border-radius: 999px; display: inline-grid; place-items: center; background: rgb(var(--surface)); color: rgb(var(--ink)); flex: none; position: relative; }
+  .ibtn:hover { box-shadow: var(--shadow); }
+  .ibtn:active { transform: scale(.96); }
+  .ibtn svg { width: 20px; height: 20px; }
+  .ibtn.ghost { background: transparent; } .ibtn.ghost:hover { background: rgb(var(--ink) / .06); box-shadow: none; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 48px; padding: 0 22px; border-radius: 999px; font-weight: 600; font-size: 15px; background: rgb(var(--soft)); color: rgb(var(--ink)); }
+  .btn:hover { background: rgb(var(--line)); }
+  .btn:active { transform: scale(.98); }
+  .btn.dark { background: rgb(var(--ink)); color: rgb(var(--bg)); }
+  .btn.dark:hover { opacity: .9; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+  .btn.danger { background: transparent; color: rgb(var(--late)); padding: 0 8px; }
+  .input { width: 100%; height: 48px; padding: 0 16px; border-radius: 16px; background: rgb(var(--soft)); color: rgb(var(--ink)); border: 1.5px solid transparent; font-size: 16px; }
+  textarea.input { height: auto; padding: 12px 16px; resize: none; line-height: 1.45; }
+  .input:focus { outline: none; border-color: rgb(var(--teal) / .6); background: rgb(var(--surface)); }
+  select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237E7C8A' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .label { font-size: 13px; color: rgb(var(--muted)); font-weight: 500; }
+  .field { display: grid; gap: 6px; }
+
+  /* Team / Personal switch */
+  .seg { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 4px; border-radius: 999px; background: rgb(var(--surface)); }
+  .seg button { height: 40px; padding: 0 18px; border-radius: 999px; font-weight: 600; font-size: 14.5px; color: rgb(var(--muted)); display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .seg button.on { background: rgb(var(--ink)); color: rgb(var(--bg)); }
+  .seg .n { font-size: 12px; font-weight: 600; opacity: .7; }
+
+  /* pastel stat cards */
+  .stat { position: relative; overflow: hidden; border-radius: 24px; padding: 14px; min-height: 108px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; color: rgb(var(--on-pastel)); text-align: left; min-width: 0; }
+  .stat::after { content: ""; position: absolute; right: -36px; bottom: -48px; width: 120px; height: 120px; border-radius: 50%; border: 20px solid rgb(255 255 255 / .2); pointer-events: none; }
+  .stat .dot { width: 36px; height: 36px; border-radius: 50%; background: rgb(255 255 255 / .9); display: grid; place-items: center; color: #1D1B22; flex: none; }
+  .stat.on { box-shadow: 0 0 0 2.5px rgb(var(--bg)), 0 0 0 5px rgb(var(--ink)); }
+  .stat:active { transform: scale(.98); }
+
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 500; background: rgb(var(--surface)); color: rgb(var(--ink)); border: 1.5px solid transparent; white-space: nowrap; flex: none; }
+  .chip.on { border-color: rgb(var(--teal)); }
+  .bubble { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 99px; display: inline-grid; place-items: center; font-size: 11.5px; font-weight: 600; color: rgb(var(--on-pastel)); }
+  .pick { height: 36px; padding: 0 14px; border-radius: 999px; font-size: 13.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; color: rgb(var(--on-pastel)); border: 2px solid transparent; }
+  .pick.on { border-color: rgb(var(--ink)); }
+  .pick:not(.on) { opacity: .55; }
+  .pick:disabled { opacity: .25; cursor: not-allowed; }
+
+  .date { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgb(var(--surface)); font-weight: 500; font-size: 15px; position: relative; flex: none; }
+  .date.sel { background: rgb(var(--teal)); color: rgb(var(--teal-ink)); font-weight: 700; }
+  .date.today:not(.sel) { box-shadow: inset 0 0 0 1.5px rgb(var(--teal)); }
+  .date i { position: absolute; bottom: -9px; left: 50%; margin-left: -2.5px; width: 5px; height: 5px; border-radius: 50%; background: rgb(var(--orange)); }
+
+  .task { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: rgb(var(--surface)); border-radius: 20px; }
+  .task:hover { box-shadow: var(--shadow); }
+  .check { flex: none; width: 26px; height: 26px; border-radius: 9px; border: 1.8px solid rgb(var(--ink) / .3); display: grid; place-items: center; position: relative; }
+  .check::before { content: ""; position: absolute; inset: -9px; }
+  .check:hover { border-color: rgb(var(--teal)); }
+  .check svg { width: 15px; height: 15px; fill: none; stroke: rgb(var(--teal-ink)); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .check .tick { stroke-dasharray: 22; stroke-dashoffset: 22; transition: stroke-dashoffset .3s cubic-bezier(.65,0,.35,1) .05s; }
+  .done .check { background: rgb(var(--teal)); border-color: rgb(var(--teal)); }
+  .done .check .tick { stroke-dashoffset: 0; }
+  .just .check { animation: pop .4s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { 0% { transform: scale(.75); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  .strike { background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-position: 0 55%; background-size: 0% 1.5px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size .4s cubic-bezier(.65,0,.35,1), color .3s; }
+  .done .strike { background-size: 100% 1.5px; color: rgb(var(--muted)); }
+  .mention { background: rgb(var(--lilac) / .35); border-radius: 6px; padding: 0 4px; font-weight: 500; }
+  .tag { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 99px; font-size: 11.5px; font-weight: 600; color: rgb(var(--on-pastel)); }
+  .cat { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .av { width: 28px; height: 28px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 11px; font-weight: 700; flex: none; color: #1D1B22; }
+  .av.lg { width: 44px; height: 44px; font-size: 15px; }
+  .stack .av { box-shadow: 0 0 0 2px rgb(var(--surface)); margin-left: -7px; } .stack .av:first-child { margin-left: 0; }
+
+  .col { border-radius: 24px; background: rgb(var(--ink) / .035); padding: 10px; display: grid; gap: 8px; align-content: start; min-height: 200px; }
+  .col.over { background: rgb(var(--teal) / .08); box-shadow: inset 0 0 0 2px rgb(var(--teal) / .5); }
+
+  .scrim { position: fixed; inset: 0; z-index: 50; background: rgb(12 10 16 / .45); display: flex; align-items: flex-end; justify-content: center; }
+  .sheet { width: 100%; max-height: 92%; overflow-y: auto; background: rgb(var(--surface)); border-radius: 28px 28px 0 0; padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px)); }
+  @media (min-width: 640px) { .scrim { align-items: center; padding: 24px; } .sheet { width: min(520px, 100%); border-radius: 28px; padding-bottom: 20px; } }
+  .grab { width: 40px; height: 5px; border-radius: 9px; background: rgb(var(--line)); margin: -8px auto 4px; }
+  @media (min-width: 640px) { .grab { display: none; } }
+  .pop { position: absolute; right: 0; top: calc(100% + 10px); z-index: 45; width: min(360px, calc(100vw - 32px)); max-height: 70vh; overflow-y: auto; background: rgb(var(--surface)); border-radius: 24px; box-shadow: var(--shadow); padding: 8px; }
+  .wa { background: rgb(var(--soft)); border-radius: 4px 16px 16px 16px; padding: 10px 12px; white-space: pre-wrap; font-size: 13.5px; line-height: 1.45; overflow-wrap: anywhere; }
+  .red-dot { position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; border-radius: 50%; background: rgb(var(--late)); box-shadow: 0 0 0 2px rgb(var(--surface)); }
+  .switch { width: 44px; height: 26px; border-radius: 99px; background: rgb(var(--line)); position: relative; flex: none; }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / .2); transition: transform .2s; }
+  .switch[aria-checked="true"] { background: rgb(var(--teal)); }
+  .switch[aria-checked="true"]::after { transform: translateX(18px); }
+
+  .fab { position: fixed; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: 60px; height: 60px; border-radius: 50%; background: rgb(var(--orange)); color: #fff; display: grid; place-items: center; box-shadow: 0 12px 30px -8px rgb(var(--orange) / .7); }
+  .fab:active { transform: scale(.95); }
+  .fab svg { width: 26px; height: 26px; }
+
+  .focus { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 24px 16px;
+    background: radial-gradient(60% 50% at 20% 15%, rgb(var(--lilac) / .55), transparent 70%), radial-gradient(60% 55% at 85% 90%, rgb(var(--orange) / .5), transparent 70%), rgb(var(--bg)); }
+  .toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(100px + env(safe-area-inset-bottom, 0px)); z-index: 80; display: grid; gap: 8px; width: min(420px, calc(100vw - 32px)); }
+  .toast { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 18px; background: rgb(var(--ink)); color: rgb(var(--bg)); font-size: 14px; box-shadow: var(--shadow); animation: up .2s ease-out; }
+  .toast button { color: rgb(var(--orange)); font-weight: 600; min-height: 32px; }
+  @keyframes up { from { transform: translateY(6px); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<div class="app min-h-full" x-data="tutoDesk()" x-cloak>
+
+  <!-- ================= SIGN IN (first screen) ================= -->
+  <section x-show="needSignIn" class="safe-top min-h-full grid place-items-center px-4 py-10">
+    <div class="w-full max-w-[360px] grid gap-7">
+      <div class="grid gap-4 justify-items-center text-center">
+        <img src="icons/icon-192.png" alt="" width="64" height="64" class="w-16 h-16 rounded-[20px]">
+        <div><h1 class="round font-bold text-[30px] leading-tight">TUTO Desk</h1><p class="text-muted mt-1">Sign in to your team's tasks.</p></div>
+      </div>
+
+      <div x-show="!apiReady" class="rounded-[24px] bg-surface p-5 text-[14.5px] leading-relaxed">
+        <b>Not connected yet.</b>
+        <p class="text-muted mt-1">Paste the backend URL into <code>index.html</code> (setup guide, part 3), then upload again.</p>
+      </div>
+
+      <div x-show="apiReady" class="rounded-[28px] bg-surface p-5 grid gap-4">
+        <div x-show="!signin.ready" class="h-12 rounded-full bg-soft animate-pulse" aria-label="Loading"></div>
+
+        <template x-if="signin.ready && googleReady && !signin.useCode">
+          <div class="grid gap-3">
+            <button type="button" class="btn dark w-full" @click="googleSignIn()" :disabled="signin.busy">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20.5 12.2c0-.7-.1-1.3-.2-1.9H12v3.6h4.8a4.2 4.2 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.6-3.9 2.6-6.6Z"/><path d="M12 21c2.4 0 4.5-.8 5.9-2.2l-2.9-2.2c-.8.5-1.8.9-3 .9a5.3 5.3 0 0 1-5-3.6H4v2.3A9 9 0 0 0 12 21Z"/><path d="M7 13.9a5.3 5.3 0 0 1 0-3.8V7.8H4a9 9 0 0 0 0 8.4l3-2.3Z"/><path d="M12 6.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 0 0 4 7.8l3 2.3a5.3 5.3 0 0 1 5-3.5Z"/></svg>
+              <span x-text="signin.busy ? 'Signing in…' : 'Continue with Google'"></span>
+            </button>
+            <p class="text-[13px] text-muted text-center">Use your work Google account. Your calls show up automatically.</p>
+            <p x-show="signin.error" role="alert" class="text-sm text-late text-center" x-text="signin.error"></p>
+            <button type="button" class="text-[13.5px] text-muted min-h-[40px]" @click="signin.useCode = true; signin.error = ''">Use an email code instead</button>
+          </div>
+        </template>
+
+        <template x-if="signin.ready && (!googleReady || signin.useCode)">
+          <form class="grid gap-3" @submit.prevent="codeStep()" novalidate>
+            <template x-if="!signin.sent">
+              <label class="field"><span class="label">Work email</span>
+                <input id="si-email" type="email" class="input" x-model="signin.email" placeholder="name@pw.live" autocomplete="email" inputmode="email" required>
+              </label>
+            </template>
+            <template x-if="signin.sent">
+              <label class="field"><span class="label">6-digit code sent to <b class="text-ink" x-text="signin.email"></b></span>
+                <input id="si-code" x-init="$nextTick(() => $el.focus())" inputmode="numeric" maxlength="6" class="input text-center num tracking-[0.5em] !text-xl" x-model="signin.code" autocomplete="one-time-code" required>
+              </label>
+            </template>
+            <p x-show="signin.error" role="alert" class="text-sm text-late" x-text="signin.error"></p>
+            <button class="btn dark w-full" :disabled="signin.busy">
+              <span x-text="signin.busy ? 'Please wait…' : (signin.sent ? 'Sign in' : 'Email me a code')"></span>
+            </button>
+            <button type="button" x-show="signin.sent" class="text-[13.5px] text-muted min-h-[40px]" @click="signin.sent=false; signin.code=''; signin.error=''">Use a different email</button>
+            <button type="button" x-show="googleReady && !signin.sent" class="text-[13.5px] text-muted min-h-[40px]" @click="signin.useCode = false; signin.error = ''">Back to Continue with Google</button>
+          </form>
+        </template>
+      </div>
+      <p class="text-center text-[12.5px] text-muted">Only invited emails can sign in.<br><a class="underline underline-offset-2 inline-block min-h-[32px] pt-1.5" href="about.html">About</a> · <a class="underline underline-offset-2 inline-block min-h-[32px] pt-1.5" href="privacy.html">Privacy</a> · <a class="underline underline-offset-2 inline-block min-h-[32px] pt-1.5" href="terms.html">Terms</a></p>
+    </div>
+  </section>
+
+  <section x-show="!me && !needSignIn" class="min-h-full grid place-items-center" aria-label="Loading">
+    <img src="icons/icon-192.png" alt="" width="48" height="48" class="w-12 h-12 rounded-[16px] animate-pulse">
+  </section>
+
+  <!-- ================= APP ================= -->
+  <template x-if="me && !needSignIn">
+  <div class="safe-top px-4 sm:px-6 pb-36 max-w-[1120px] mx-auto">
+
+    <div x-show="demo" class="mt-3 text-[12.5px] text-muted flex gap-2 items-center"><span class="tag bg-orange/80">Demo</span>Sample data. <button class="underline min-h-[32px]" @click="resetDemo()">Reset</button></div>
+    <div x-show="offline && !demo" role="status" class="mt-3 text-[13px] text-late">Offline. Showing your last copy.</div>
+
+    <!-- header -->
+    <header class="flex items-center gap-3 pt-5">
+      <button @click="openSettings()" aria-label="Profile and settings" class="rounded-full"><span class="av lg" :style="avStyle(me.email)" x-text="initials(me.name)"></span></button>
+      <div class="min-w-0 flex-1">
+        <h1 class="round font-bold text-[22px] leading-tight truncate" x-text="greeting"></h1>
+        <p class="text-[13.5px] text-muted" x-text="summary"></p>
+      </div>
+      <button class="ibtn" x-show="canInstall" @click="install()" aria-label="Install app" title="Install app">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>
+      </button>
+      <button class="ibtn hidden sm:inline-grid" @click="toggleTheme()" :aria-label="isDark ? 'Light mode' : 'Dark mode'">
+        <svg x-show="!isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+        <svg x-show="isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <div class="relative">
+        <button class="ibtn" @click="openBell()" aria-label="Nudges">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>
+          <span class="red-dot" x-show="unread"></span>
+        </button>
+        <div class="pop" x-show="bell" x-transition.origin.top.right @click.outside="bell=false">
+          <div class="px-3 pt-2 pb-3 flex items-baseline justify-between"><b>Nudges</b><span class="text-xs text-muted">WhatsApp</span></div>
+          <div class="grid gap-3 px-1 pb-2">
+            <template x-for="n in notifications" :key="n.id">
+              <div class="grid gap-1">
+                <div class="flex text-xs text-muted gap-2"><span class="font-semibold text-ink" x-text="KIND[n.kind] || n.kind"></span><span class="ml-auto" x-text="relTime(n.createdAt)"></span></div>
+                <div class="wa" x-text="n.text"></div>
+                <div class="text-[11.5px] text-muted" x-text="statusLabel(n.status)"></div>
+              </div>
+            </template>
+            <p x-show="!notifications.length" class="text-sm text-muted px-2 pb-2">Nothing yet.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Team / Personal + search -->
+    <div class="mt-5 flex flex-col sm:flex-row gap-3">
+      <div class="seg w-full sm:w-auto" role="tablist" aria-label="View">
+        <button role="tab" :aria-selected="space==='team'" :class="{on: space==='team'}" @click="setSpace('team')">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.7 2.6 3 5.2"/></svg>
+          Team <span class="n num" x-text="openIn('team')"></span>
+        </button>
+        <button role="tab" :aria-selected="space==='personal'" :class="{on: space==='personal'}" @click="setSpace('personal')">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          Personal <span class="n num" x-text="openIn('personal')"></span>
+        </button>
+      </div>
+      <label class="relative block flex-1">
+        <span class="sr-only">Search tasks</span>
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" x-ref="search" type="search" x-model="q" :placeholder="space==='team' ? 'Search, @name, #meetings' : 'Search personal'" class="w-full h-12 rounded-full bg-surface pl-11 pr-4 text-[15px] outline-none focus:ring-2 focus:ring-teal/40">
+      </label>
+    </div>
+
+    <!-- stat cards: always three across, never clipped -->
+    <div class="mt-4 grid grid-cols-3 gap-2.5 sm:gap-3">
+      <template x-for="s in stats" :key="s.key">
+        <button class="stat" :class="{on: quick===s.key}" :style="`background: rgb(var(--${s.color}))`" @click="quick = quick===s.key ? '' : s.key" :aria-pressed="quick===s.key">
+          <div class="flex items-center justify-between gap-2">
+            <span class="dot" x-html="s.icon"></span>
+            <span class="round font-bold text-[28px] leading-none num" x-text="s.n"></span>
+          </div>
+          <span class="text-[13px] font-semibold leading-tight" x-text="s.label"></span>
+        </button>
+      </template>
+    </div>
+
+    <!-- post-call prompts -->
+    <template x-for="p in prompts" :key="p.id">
+      <div class="mt-4 rounded-[24px] bg-orange/90 p-4 pl-5 text-[#1D1B22] flex items-center gap-4">
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] opacity-75">Call ended <span x-text="relTime(p.endedAt)"></span></div>
+          <div class="round font-bold text-[17px] leading-tight line-clamp-2" x-text="p.title"></div>
+        </div>
+        <button class="text-[13px] font-medium opacity-75 min-h-[44px] px-2" @click="dismissPrompt(p)">Skip</button>
+        <button class="h-11 px-4 rounded-full bg-white font-semibold text-[14px] flex-none" @click="openActions(p)">Add notes</button>
+      </div>
+    </template>
+
+    <div class="mt-7 grid gap-8 lg:grid-cols-[340px_1fr] lg:gap-10 items-start">
+
+      <!-- ===== Your day ===== -->
+      <section class="grid gap-3 min-w-0" aria-labelledby="day-h">
+        <div class="flex items-center gap-1">
+          <h2 id="day-h" class="round font-bold text-[19px] flex-1" x-text="dayTitle"></h2>
+          <button class="ibtn ghost" @click="shiftWeek(-1)" aria-label="Previous week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg></button>
+          <button class="ibtn ghost" @click="shiftWeek(1)" aria-label="Next week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button>
+        </div>
+        <div class="flex justify-between">
+          <template x-for="d in strip" :key="d.key">
+            <div class="grid gap-1.5 justify-items-center">
+              <span class="text-[11px] text-muted font-medium" x-text="d.dow"></span>
+              <button class="date num" :class="{sel: d.key===day, today: d.isToday}" @click="day=d.key" :aria-label="d.label" :aria-current="d.key===day ? 'date' : null"><span x-text="d.n"></span><i x-show="d.busy"></i></button>
+            </div>
+          </template>
+        </div>
+        <div class="grid gap-2 mt-3">
+          <template x-for="e in dayCalls" :key="e.id">
+            <div class="rounded-[18px] px-4 min-h-[52px] flex items-center gap-3 text-[#1D1B22]" :style="`background: rgb(var(--lilac) / ${new Date(e.end) < now ? .45 : .85})`">
+              <span class="text-[13px] font-semibold num w-[62px] flex-none" x-text="fmtClock(e.start)"></span>
+              <span class="flex-1 min-w-0 truncate font-medium text-[14.5px]" x-text="e.title"></span>
+              <button x-show="new Date(e.end) < now" class="text-[13px] font-semibold underline underline-offset-2 min-h-[44px]" @click="openActions(e)">Notes</button>
+              <span x-show="new Date(e.end) >= now" class="text-[12.5px] opacity-75 num" x-text="until(e)"></span>
+            </div>
+          </template>
+          <template x-for="t in dayTasks" :key="t.id">
+            <div class="task !py-3" :class="{done: t.status==='done', just: lingering[t.id]}">
+              <button class="check" @click="toggleDone(t)" :aria-label="'Mark done: ' + t.title"><svg viewBox="0 0 24 24"><path class="tick" d="M5 12.5l4.2 4.2L19 7"/></svg></button>
+              <button class="flex-1 min-w-0 text-left grid gap-1" @click="openTask(t)">
+                <span class="font-medium text-[14.5px] leading-snug"><span class="strike" x-html="rich(t.title)"></span></span>
+                <span class="flex items-center gap-2 text-[12.5px] text-muted"><span class="cat" :style="catStyle(t.category)"></span><span :class="{'text-late font-medium': isOverdue(t)}" x-text="fmtDue(t)"></span></span>
+              </button>
+            </div>
+          </template>
+          <p x-show="!dayTasks.length && !dayCalls.length" class="text-muted text-sm py-3 text-center">Nothing due. Enjoy the day.</p>
+          <button x-show="!me.calendar && !demo" class="text-[13px] text-muted min-h-[40px] justify-self-start" @click="connectCalendar()">+ Show my calls here</button>
+        </div>
+      </section>
+
+      <!-- ===== Tasks ===== -->
+      <section class="grid gap-3 min-w-0" aria-labelledby="tasks-h">
+        <div class="flex items-center gap-2 flex-wrap">
+          <h2 id="tasks-h" class="sr-only" x-text="space==='team' ? 'Team tasks' : 'Personal tasks'"></h2>
+          <template x-for="f in [['active','Open','blue'],['done','Done','lilac'],['all','All','plum']]" :key="f[0]">
+            <button class="chip" :class="{on: filter===f[0]}" @click="filter=f[0]" :aria-pressed="filter===f[0]">
+              <span x-text="f[1]"></span><span class="bubble num" :style="`background: rgb(var(--${f[2]}) / .7)`" x-text="counts[f[0]]"></span>
+            </button>
+          </template>
+          <button x-show="quick" class="chip !bg-ink !text-bg" @click="quick=''" aria-label="Clear card filter"><span x-text="(stats.find(s => s.key===quick) || {}).label"></span><span aria-hidden="true">✕</span></button>
+          <div class="ml-auto flex">
+            <button class="ibtn" :class="view==='list' ? '' : 'ghost'" @click="setView('list')" aria-label="List view" :aria-pressed="view==='list'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
+            <button class="ibtn" :class="view==='board' ? '' : 'ghost'" @click="setView('board')" aria-label="Board view" :aria-pressed="view==='board'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/></svg></button>
+          </div>
+        </div>
+
+        <!-- blank slate -->
+        <div x-show="!spaceTasks.length" class="rounded-[28px] bg-surface p-8 grid gap-3 justify-items-center text-center">
+          <span class="w-14 h-14 rounded-full grid place-items-center" :style="`background: rgb(var(--${space==='team' ? 'blue' : 'plum'}))`">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#1D1B22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>
+          </span>
+          <h3 class="round font-bold text-lg" x-text="space==='team' ? 'No team tasks yet' : 'Your private space'"></h3>
+          <p class="text-muted text-[14px] max-w-[300px]" x-text="space==='team' ? 'Everyone on the team sees these. Tag someone with @name.' : 'Only you can see Personal tasks.'"></p>
+          <button class="btn dark mt-1" @click="openCompose()">Add first task</button>
+        </div>
+
+        <!-- list -->
+        <div x-show="view==='list' && spaceTasks.length" class="grid gap-2">
+          <template x-for="t in browse" :key="t.id">
+            <div class="task group" :class="{done: t.status==='done', just: lingering[t.id]}">
+              <button class="check" @click="toggleDone(t)" :aria-label="(t.status==='done' ? 'Reopen: ' : 'Mark done: ') + t.title"><svg viewBox="0 0 24 24"><path class="tick" d="M5 12.5l4.2 4.2L19 7"/></svg></button>
+              <button class="flex-1 min-w-0 text-left grid gap-1.5" @click="openTask(t)">
+                <span class="font-medium leading-snug"><span class="strike" x-html="rich(t.title)"></span></span>
+                <span class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] text-muted">
+                  <span class="inline-flex items-center gap-1.5"><span class="cat" :style="catStyle(t.category)"></span><span x-text="t.category"></span></span>
+                  <span x-show="t.due" :class="{'text-late font-medium': isOverdue(t)}" x-text="fmtDue(t)"></span>
+                  <span x-show="t.priority==='high'" class="tag bg-orange/70">High</span>
+                  <span x-show="t.status==='doing'" class="tag bg-blue/70">Doing</span>
+                  <span x-show="commentCount(t.id)" class="inline-flex items-center gap-1" :aria-label="commentCount(t.id) + ' comments'"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/></svg><span x-text="commentCount(t.id)"></span></span>
+                </span>
+              </button>
+              <span class="stack flex" x-show="space==='team'"><template x-for="p in faces(t)" :key="p"><span class="av" :style="avStyle(p)" :title="person(p).name" x-text="initials(person(p).name)"></span></template></span>
+            </div>
+          </template>
+          <p x-show="!browse.length" class="text-center text-muted py-10" x-text="q || quick ? 'No matches.' : (filter==='done' ? 'Nothing done yet.' : 'All clear.')"></p>
+        </div>
+
+        <!-- board -->
+        <div x-show="view==='board' && spaceTasks.length" class="grid gap-3 md:grid-cols-3">
+          <template x-for="c in board" :key="c.key">
+            <section class="col" :class="{over: dragOver===c.key}" @dragover.prevent="dragOver=c.key" @dragleave.self="dragOver=''" @drop.prevent="onDrop(c.key)" :aria-label="c.title">
+              <div class="flex items-center gap-2 px-1.5 pt-1 pb-1"><span class="tag !h-6 !text-[12px]" :style="`background: rgb(var(--${c.color}) / .8)`" x-text="c.title"></span><span class="text-sm text-muted num" x-text="c.tasks.length"></span></div>
+              <template x-for="t in c.tasks" :key="t.id">
+                <div class="task !p-3 cursor-grab" :class="{done: t.status==='done', just: lingering[t.id], 'opacity-40': dragId===t.id}" draggable="true" @dragstart="onDragStart($event, t)" @dragend="dragId=null; dragOver=''">
+                  <button class="check" @click="toggleDone(t)" :aria-label="'Mark done: ' + t.title"><svg viewBox="0 0 24 24"><path class="tick" d="M5 12.5l4.2 4.2L19 7"/></svg></button>
+                  <button class="flex-1 min-w-0 text-left grid gap-1.5" @click="openTask(t)">
+                    <span class="font-medium text-[14.5px] leading-snug"><span class="strike" x-html="rich(t.title)"></span></span>
+                    <span class="flex items-center gap-2 text-[12px] text-muted"><span class="cat" :style="catStyle(t.category)"></span><span :class="{'text-late': isOverdue(t)}" x-text="fmtDue(t) || t.category"></span></span>
+                  </button>
+                  <span class="stack flex" x-show="space==='team'"><template x-for="p in faces(t).slice(0,2)" :key="p"><span class="av" :style="avStyle(p)" x-text="initials(person(p).name)"></span></template></span>
+                </div>
+              </template>
+            </section>
+          </template>
+        </div>
+      </section>
+    </div>
+
+    <button class="fab" @click="openCompose()" aria-label="New task"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+
+    <!-- ================= new task ================= -->
+    <div class="scrim" x-show="compose" x-transition.opacity @click.self="compose=null">
+      <template x-if="compose">
+        <form class="sheet grid gap-4" @submit.prevent="addCompose()" role="dialog" aria-labelledby="c-h">
+          <div class="grab"></div>
+          <div class="flex items-center justify-between"><h2 id="c-h" class="round font-bold text-xl">New task</h2><button type="button" class="ibtn ghost" @click="compose=null" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+          <label for="c-text" class="sr-only">Task</label>
+          <textarea id="c-text" x-ref="ctext" rows="2" class="input !text-[17px]" x-model="compose.text" :placeholder="compose.category===PERSONAL ? 'Book dentist fri' : 'Send deck to @riya fri 5pm !high'"
+                    @keydown.enter.prevent="addCompose()" @keydown.tab="if (suggest(compose.text).length) { $event.preventDefault(); compose.text = pick(compose.text, suggest(compose.text)[0]) }"></textarea>
+          <div class="flex flex-wrap gap-2" x-show="suggest(compose.text).length">
+            <template x-for="s in suggest(compose.text)" :key="s.insert"><button type="button" class="chip !bg-soft" @click="compose.text = pick(compose.text, s); $refs.ctext.focus()" x-text="s.label"></button></template>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 min-h-[24px]">
+            <template x-if="cp.due"><span class="tag bg-blue/70" x-text="fmtDue(cp)"></span></template>
+            <template x-if="cp.priority"><span class="tag bg-orange/70" x-text="cap(cp.priority)"></span></template>
+            <template x-if="cp.spoc && compose.category!==PERSONAL"><span class="tag bg-lilac/70" x-text="'SPOC: ' + person(cp.spoc).name.split(' ')[0]"></span></template>
+            <span x-show="!compose.text.trim()" class="text-[13px] text-muted">@name · !high · fri 5pm</span>
+          </div>
+          <div class="grid gap-2">
+            <span class="label">Category</span>
+            <div class="flex flex-wrap gap-2">
+              <template x-for="c in categories" :key="c">
+                <button type="button" class="pick" :class="{on: compose.category===c}" :style="catStyle(c)" @click="compose.category=c" :aria-pressed="compose.category===c">
+                  <svg x-show="c===PERSONAL" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                  <span x-text="c"></span>
+                </button>
+              </template>
+            </div>
+            <p class="text-[12.5px] text-muted" x-text="compose.category===PERSONAL ? 'Only you will see this.' : 'Visible to the whole team.'"></p>
+          </div>
+          <button type="button" class="text-[13.5px] text-muted justify-self-start min-h-[40px]" @click="compose.more = !compose.more" :aria-expanded="compose.more" x-text="compose.more ? 'Fewer options' : 'Date, priority, SPOC'"></button>
+          <div x-show="compose.more" class="grid grid-cols-2 gap-3">
+            <label class="field"><span class="label">Date</span><input id="c-due" type="date" class="input" x-model="compose.due"></label>
+            <label class="field"><span class="label">Time</span><input id="c-time" type="time" class="input" x-model="compose.dueTime"></label>
+            <label class="field"><span class="label">Priority</span><select id="c-prio" class="input" x-model="compose.priority"><option value="">Medium</option><option value="high">High</option><option value="low">Low</option></select></label>
+            <label class="field" x-show="compose.category!==PERSONAL"><span class="label">SPOC</span><select id="c-spoc" class="input" x-model="compose.spoc"><option value="">Auto</option><template x-for="p in users" :key="p.email"><option :value="p.email" x-text="p.name"></option></template></select></label>
+          </div>
+          <button type="submit" class="btn dark w-full" :disabled="!compose.text.trim() || compose.busy">Add task</button>
+        </form>
+      </template>
+    </div>
+
+    <!-- ================= task detail ================= -->
+    <div class="scrim" x-show="drawer" x-transition.opacity @click.self="closeDrawer()">
+      <template x-if="drawer">
+        <form class="sheet grid gap-5" @submit.prevent="saveDrawer()" role="dialog" aria-label="Task">
+          <div class="grab"></div>
+          <div class="flex items-center gap-2">
+            <button type="button" class="ibtn !bg-soft" @click="closeDrawer()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg></button>
+            <span class="flex-1 text-center text-[13px] text-muted" x-text="drawer.category===PERSONAL ? 'Personal · only you' : 'Team · by ' + person(drawer.createdBy).name.split(' ')[0]"></span>
+            <button type="button" class="ibtn !bg-soft" x-show="drawer.status!=='done'" @click="focusFromDrawer()" aria-label="Focus for 25 minutes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2h4"/></svg></button>
+          </div>
+          <label for="d-title" class="sr-only">Title</label>
+          <textarea id="d-title" rows="2" class="round font-bold text-[22px] leading-tight bg-transparent outline-none resize-none -mt-2" x-model="drawer.title"></textarea>
+          <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Status">
+            <template x-for="s in [['todo','To do','blue'],['doing','Doing','lilac'],['done','Done','orange']]" :key="s[0]">
+              <button type="button" role="radio" :aria-checked="drawer.status===s[0]" class="pick" :class="{on: drawer.status===s[0]}" :style="`background: rgb(var(--${s[2]}) / .8)`" @click="drawer.status=s[0]" x-text="s[1]"></button>
+            </template>
+          </div>
+          <div class="grid gap-2">
+            <span class="label">Category</span>
+            <div class="flex flex-wrap gap-2">
+              <template x-for="c in categories" :key="c">
+                <button type="button" class="pick" :class="{on: drawer.category===c}" :style="catStyle(c)" @click="drawer.category=c" :disabled="c===PERSONAL && drawer.createdBy!==me.email" :aria-pressed="drawer.category===c" x-text="c"></button>
+              </template>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="field"><span class="label">Date</span><input id="d-due" type="date" class="input" x-model="drawer.due"></label>
+            <label class="field"><span class="label">Time</span><input id="d-time" type="time" class="input" x-model="drawer.dueTime"></label>
+            <label class="field"><span class="label">Priority</span><select id="d-prio" class="input" x-model="drawer.priority"><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+            <label class="field" x-show="drawer.category!==PERSONAL"><span class="label">SPOC</span><select id="d-spoc" class="input" x-model="drawer.spoc"><option value="">None</option><template x-for="p in users" :key="p.email"><option :value="p.email" :selected="p.email===drawer.spoc" x-text="p.name"></option></template></select></label>
+          </div>
+          <label class="field"><span class="label">Notes</span><textarea id="d-notes" rows="3" class="input" x-model="drawer.notes" :placeholder="drawer.category===PERSONAL ? 'Notes' : 'Notes · @name to tag'"></textarea></label>
+
+          <div class="grid gap-3" x-show="drawer.category!==PERSONAL">
+            <span class="label">Comments</span>
+            <template x-for="c in commentsFor(drawer.id)" :key="c.id">
+              <div class="flex gap-2.5">
+                <span class="av" :style="avStyle(c.author)" x-text="initials(person(c.author).name)"></span>
+                <div class="min-w-0 flex-1">
+                  <div class="text-[12px] text-muted"><b class="text-ink font-semibold" x-text="person(c.author).name.split(' ')[0]"></b> · <span x-text="relTime(c.createdAt)"></span></div>
+                  <div class="text-[14px] leading-snug mt-0.5 break-words" x-html="rich(c.text)"></div>
+                </div>
+              </div>
+            </template>
+            <div class="flex gap-2">
+              <label for="d-comment" class="sr-only">Comment</label>
+              <input id="d-comment" class="input" x-model="drawer.comment" placeholder="Comment · @name" autocomplete="off"
+                     @keydown.enter.prevent="sendComment()" @keydown.tab="if (suggest(drawer.comment).length) { $event.preventDefault(); drawer.comment = pick(drawer.comment, suggest(drawer.comment)[0]) }">
+              <button type="button" class="ibtn !bg-soft !w-12 !h-12" @click="sendComment()" aria-label="Send comment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+            <div class="flex flex-wrap gap-2" x-show="suggest(drawer.comment).length">
+              <template x-for="s in suggest(drawer.comment)" :key="s.insert"><button type="button" class="chip !bg-soft" @click="drawer.comment = pick(drawer.comment, s)" x-text="s.label"></button></template>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1 border-t border-line -mx-5 px-5 pt-4">
+            <button type="button" class="btn danger" @click="deleteTask(drawer)">Delete</button>
+            <button type="submit" class="btn dark ml-auto">Save</button>
+          </div>
+        </form>
+      </template>
+    </div>
+
+    <!-- ================= settings ================= -->
+    <div class="scrim" x-show="settings" x-transition.opacity @click.self="settings=null">
+      <template x-if="settings">
+        <form class="sheet grid gap-5" @submit.prevent="saveSettings()" role="dialog" aria-labelledby="s-h">
+          <div class="grab"></div>
+          <div class="flex items-center gap-3">
+            <span class="av lg" :style="avStyle(me.email)" x-text="initials(me.name)"></span>
+            <div class="min-w-0 flex-1"><h2 id="s-h" class="round font-bold text-lg" x-text="me.name"></h2><div class="text-[13px] text-muted truncate" x-text="'@' + handle(me.email) + ' · ' + me.email"></div></div>
+            <button type="button" class="ibtn !bg-soft" @click="toggleTheme()" :aria-label="isDark ? 'Light mode' : 'Dark mode'">
+              <svg x-show="!isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+              <svg x-show="isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+            </button>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="field"><span class="label">Name</span><input id="s-name" class="input" x-model="settings.name" autocomplete="name"></label>
+            <label class="field"><span class="label">WhatsApp</span><input id="s-phone" type="tel" class="input num" x-model="settings.phone" placeholder="+91 98765 43210" autocomplete="tel"></label>
+          </div>
+
+          <div class="grid gap-1">
+            <span class="label mb-1">WhatsApp me when</span>
+            <template x-for="p in PREFS" :key="p.key">
+              <div class="flex items-center gap-3 min-h-[44px]">
+                <span class="flex-1 text-[14.5px]" :id="'pref-' + p.key" x-text="p.label"></span>
+                <button type="button" class="switch" role="switch" :aria-checked="settings.prefs[p.key] ? 'true' : 'false'" :aria-labelledby="'pref-' + p.key" @click="settings.prefs[p.key] = !settings.prefs[p.key]"></button>
+              </div>
+            </template>
+          </div>
+
+          <div class="rounded-[20px] bg-soft p-4 grid gap-3">
+            <div class="flex items-center gap-2"><span class="cat" :style="`background: rgb(var(--${me.calendar ? 'teal' : 'orange'}))`"></span><b class="text-[14.5px] flex-1">My calls</b><span class="text-[12.5px] text-muted" x-text="me.calendar ? (me.calSource === 'link' ? 'Calendar link' : 'Google Calendar') : 'Not connected'"></span></div>
+            <template x-if="!me.calendar">
+              <div class="grid gap-3">
+                <button type="button" class="btn dark !h-11" @click="connectCalendar()">Connect Google Calendar</button>
+                <details class="text-[13px] text-muted">
+                  <summary class="cursor-pointer min-h-[32px] flex items-center">Not a Google calendar? Paste a link</summary>
+                  <label class="field mt-2"><span class="label">Calendar link (iCal / .ics)</span><input id="s-ical" class="input !bg-surface !text-[13px]" x-model="settings.ical" placeholder="https://…/basic.ics" autocomplete="off"></label>
+                </details>
+              </div>
+            </template>
+            <div x-show="me.calendar" class="flex items-center gap-2">
+              <p class="text-[12.5px] text-muted flex-1">Only you see your calls.</p>
+              <button type="button" class="btn danger !h-10" @click="disconnectCal()">Disconnect</button>
+            </div>
+          </div>
+
+          <div class="grid gap-2">
+            <span class="label">Team</span>
+            <div class="flex flex-wrap gap-2">
+              <template x-for="u in users" :key="u.email">
+                <span class="inline-flex items-center gap-2 h-9 pl-1 pr-3 rounded-full bg-soft text-[13px]"><span class="av !w-7 !h-7" :style="avStyle(u.email)" x-text="initials(u.name)"></span><span x-text="'@' + handle(u.email)"></span><span x-show="!u.joined" class="text-muted">· invited</span></span>
+              </template>
+            </div>
+          </div>
+
+          <p x-show="settings.error" role="alert" class="text-sm text-late" x-text="settings.error"></p>
+          <div class="flex flex-wrap items-center gap-2 border-t border-line -mx-5 px-5 pt-4">
+            <button type="button" class="btn" @click="testWhatsApp()">Test nudge</button>
+            <button type="button" class="btn danger" x-show="!demo" @click="signOut()">Sign out</button>
+            <button type="submit" class="btn dark ml-auto" :disabled="settings.busy" x-text="settings.busy ? 'Saving…' : 'Save'"></button>
+          </div>
+        </form>
+      </template>
+    </div>
+
+    <!-- ================= call notes → tasks ================= -->
+    <div class="scrim" x-show="actions" x-transition.opacity @click.self="actions=null">
+      <template x-if="actions">
+        <form class="sheet grid gap-4" @submit.prevent="submitActions()" role="dialog" aria-labelledby="a-h">
+          <div class="grab"></div>
+          <div><div class="label">Action items from</div><h2 id="a-h" class="round font-bold text-xl mt-0.5" x-text="actions.title"></h2></div>
+          <label for="a-text" class="sr-only">Action items, one per line</label>
+          <textarea id="a-text" x-ref="aiText" rows="4" class="input" x-model="actions.text" placeholder="One per line&#10;Send mapping to @riya fri&#10;TTS numbers @kabir tomorrow !high"></textarea>
+          <div class="grid gap-1.5" x-show="actionItems.length">
+            <template x-for="(it, i) in actionItems" :key="i">
+              <div class="flex flex-wrap items-center gap-2 text-[14px]"><span class="cat" :style="catStyle('Meetings')"></span><span x-html="rich(it.title)"></span><span class="text-muted text-[12.5px]" x-text="fmtDue(it)"></span></div>
+            </template>
+          </div>
+          <p x-show="actions.error" role="alert" class="text-sm text-late" x-text="actions.error"></p>
+          <button type="submit" class="btn dark" :disabled="!actionItems.length" x-text="actionItems.length ? 'Add ' + actionItems.length + ' team task' + (actionItems.length === 1 ? '' : 's') : 'Add tasks'"></button>
+        </form>
+      </template>
+    </div>
+
+    <!-- ================= focus ================= -->
+    <div class="focus" x-show="focus.on" x-transition.opacity role="dialog" aria-label="Focus timer">
+      <div class="grid gap-8 place-items-center text-center w-full max-w-sm">
+        <span class="tag !h-7 !px-3 bg-surface !text-ink" x-text="focus.mode==='focus' ? 'Focus' : 'Break'"></span>
+        <div class="round font-bold text-[88px] leading-none num tracking-tight" x-text="mmss(focus.left)"></div>
+        <div class="w-full h-2 rounded-full bg-ink/10 overflow-hidden"><div class="h-full rounded-full bg-ink" :style="`width: ${100 * (1 - focus.left / focus.total)}%; transition: width 1s linear`"></div></div>
+        <div class="round font-bold text-xl" x-text="focus.task ? focus.task.title : ''"></div>
+        <div class="flex gap-3">
+          <button class="ibtn !w-14 !h-14" @click="focus.running=!focus.running" :aria-label="focus.running ? 'Pause' : 'Resume'">
+            <svg x-show="focus.running" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg x-show="!focus.running" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="ibtn !w-14 !h-14 !bg-ink !text-bg" @click="focusDone()" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg></button>
+          <button class="ibtn !w-14 !h-14" @click="stopFocus()" aria-label="Exit focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </template>
+
+  <div class="toasts" aria-live="polite">
+    <template x-for="t in toasts" :key="t.id">
+      <div class="toast"><span class="flex-1" x-text="t.msg"></span><button x-show="t.undo" @click="t.undo(); toasts = toasts.filter(x => x.id!==t.id)">Undo</button></div>
+    </template>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   CONFIG — paste your backend URL (setup guide, part 3).
+   ========================================================================== */
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycbzKiXT7woD7PmdKZ53F9MrhWNWZcQRP1SHB8Aw33YBL9gSoM3pnhYUHiF-lCnjWGZqutA/exec',   // https://script.google.com/macros/s/…/exec
+};
+const FORCE_DEMO = false;   // true only in the hosted demo copy
+const DEMO = FORCE_DEMO || /[?&]demo\b/.test(location.search);
+const BASE_TITLE = document.title;
+const PERSONAL = 'Personal';
+
+// ---------- utils
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseYmd = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const startOfWeek = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+const hm = (h, m) => `${pad(h)}:${pad(m)}`;
+const norm = s => String(s).toLowerCase().replace(/[^a-z]/g, '');
+const newId = p => p + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const EMAIL_RE = /^[^\s@,;]+@[^\s@,;]+\.[a-z]{2,}$/i;
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAYS_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const PW = { high: 0, medium: 1, low: 2 };
+const CAT_COLOR = { Work: 'blue', Meetings: 'lilac', 'Follow-ups': 'orange', Personal: 'plum' };
+const AV_COLORS = ['blue', 'lilac', 'orange', 'plum', 'mint'];
+const KIND = { call: 'Call soon', newcall: 'New call', digest: 'Morning', overdue: 'Overdue', assign: 'SPOC', tagged: 'Tagged', actions: 'Call notes', test: 'Test' };
+const PREFS = [
+  { key: 'callAlerts', label: 'A call starts in 15 min' }, { key: 'newCalls', label: 'A new call is booked' },
+  { key: 'digest', label: 'Morning digest' }, { key: 'assign', label: 'I\'m made SPOC' },
+  { key: 'tagged', label: 'Someone @tags me' }, { key: 'overdue', label: 'High priority is late' },
+  { key: 'actionItems', label: 'A call ends' },
+];
+
+function fmtHM(s) { const [h, m] = s.split(':').map(Number); return `${h % 12 || 12}${m ? ':' + pad(m) : ''} ${h < 12 ? 'AM' : 'PM'}`; }
+function dueDate(t) { if (!t.due) return null; const d = parseYmd(t.due); if (t.dueTime) { const [h, m] = t.dueTime.split(':').map(Number); d.setHours(h, m); } else d.setHours(23, 59); return d; }
+function isOverdue(t) { const d = dueDate(t); return t.status !== 'done' && !!d && d < new Date(); }
+function fmtDue(t) {
+  if (!t.due) return '';
+  const d = parseYmd(t.due), diff = Math.round((d - parseYmd(ymd(new Date()))) / 864e5);
+  const s = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : diff === -1 ? 'Yesterday' : diff > 1 && diff < 7 ? DAYS[d.getDay()] : `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  return t.dueTime ? `${s}, ${fmtHM(t.dueTime)}` : s;
+}
+function byDue(a, b) {
+  const da = dueDate(a), db = dueDate(b);
+  if (da && db && +da !== +db) return da - db;
+  if (da && !db) return -1; if (!da && db) return 1;
+  return (PW[a.priority] - PW[b.priority]) || (a.createdAt < b.createdAt ? 1 : -1);
+}
+
+// ---------- quick-add parser: @mentions stay in the title; the first one becomes SPOC.
+const WDRE = 'sun(?:day)?|mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?';
+const MONRE = 'jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?';
+
+function resolveHandle(h, people) {
+  h = h.toLowerCase();
+  return people.find(p => p.handle === h) || people.find(p => p.email.split('@')[0] === h) || null;
+}
+function parseQuick(input, people, me, categories, now = new Date()) {
+  let s = ' ' + (input || '') + ' ';
+  const out = {};
+  const take = (src, fn) => {
+    for (const m of s.matchAll(new RegExp(src, 'gi'))) {
+      if (fn(m) !== false) { s = s.slice(0, m.index) + ' ' + s.slice(m.index + m[0].length); return true; }
+    }
+    return false;
+  };
+  const setMD = (day, mon, idx) => {
+    const mi = idx != null ? idx : MONTHS.findIndex(m => m.toLowerCase() === mon.toLowerCase().slice(0, 3));
+    if (mi < 0 || mi > 11 || day < 1 || day > 31) return false;
+    let d = new Date(now.getFullYear(), mi, day);
+    if (d.getMonth() !== mi) return false;
+    if (ymd(d) < ymd(now)) d = new Date(now.getFullYear() + 1, mi, day);
+    out.due = ymd(d);
+  };
+  take('\\s!(high|hi|h|urgent|medium|med|m|low|lo|l)(?=\\s)', m => { const k = m[1].toLowerCase(); out.priority = /^h|urgent/.test(k) ? 'high' : /^m/.test(k) ? 'medium' : 'low'; });
+  if (!out.priority) take('\\s(!{1,3})(?=\\s)', m => { out.priority = ['low', 'medium', 'high'][m[1].length - 1]; });
+  take('\\s#([\\w-]+)(?=\\s)', m => { const k = norm(m[1]); const c = k && categories.find(c => norm(c).startsWith(k)); if (!c) return false; out.category = c; });
+  take('\\s(?:at\\s+)?(\\d{1,2})(?:[:.](\\d{2}))?\\s?(am|pm)(?=\\s)', m => { const h = +m[1], mi = +(m[2] || 0); if (h < 1 || h > 12 || mi > 59) return false; out.dueTime = hm(h % 12 + (m[3].toLowerCase() === 'pm' ? 12 : 0), mi); });
+  if (!out.dueTime) take('\\s(?:at\\s+)?([01]?\\d|2[0-3]):([0-5]\\d)(?=\\s)', m => { out.dueTime = hm(+m[1], +m[2]); });
+  if (!out.dueTime) take('\\s(?:by\\s+)?(noon|eod)(?=\\s)', m => { const k = m[1].toLowerCase(); out.dueTime = k === 'noon' ? '12:00' : '18:00'; if (k === 'eod') out.due = ymd(now); });
+  const P = '\\s(?:(?:by|on|due|before)\\s+)?';
+  if (!out.due) take(P + '(today|tonight|tomorrow|tmrw|tmr)(?=\\s)', m => { const k = m[1].toLowerCase(); out.due = ymd(/^t(omorrow|mrw|mr)$/.test(k) ? addDays(now, 1) : now); if (k === 'tonight' && !out.dueTime) out.dueTime = '20:00'; });
+  if (!out.due) take(P + '(next\\s+)?(' + WDRE + ')(?=\\s)', m => { const wd = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].indexOf(m[2].toLowerCase().slice(0, 3)); let diff = (wd - now.getDay() + 7) % 7 || 7; if (m[1] && wd > now.getDay()) diff += 7; out.due = ymd(addDays(now, diff)); });
+  if (!out.due) take(P + 'in\\s+(\\d{1,2})\\s*(d|days?|w|wks?|weeks?)(?=\\s)', m => { out.due = ymd(addDays(now, +m[1] * (/^w/i.test(m[2]) ? 7 : 1))); });
+  if (!out.due) take(P + '(eow|end\\s+of\\s+(?:the\\s+)?week)(?=\\s)', () => { out.due = ymd(addDays(now, (5 - now.getDay() + 7) % 7)); });
+  if (!out.due) take(P + '(next\\s+week)(?=\\s)', () => { out.due = ymd(addDays(now, ((1 - now.getDay() + 7) % 7) || 7)); });
+  if (!out.due) take(P + '(\\d{1,2})(?:st|nd|rd|th)?\\s+(' + MONRE + ')(?=\\s)', m => setMD(+m[1], m[2]));
+  if (!out.due) take(P + '(' + MONRE + ')\\s+(\\d{1,2})(?:st|nd|rd|th)?(?=\\s)', m => setMD(+m[2], m[1]));
+  if (!out.due) take(P + '(\\d{1,2})\\/(\\d{1,2})(?=\\s)', m => setMD(+m[1], null, +m[2] - 1));
+  if (out.dueTime && !out.due) { const [h, mi] = out.dueTime.split(':').map(Number); const c = new Date(now); c.setHours(h, mi, 0, 0); out.due = ymd(c > now ? now : addDays(now, 1)); }
+  const mine = people.find(p => p.email === me);
+  if (mine) s = s.replace(/(^|\s)@me(?=\s)/gi, `$1@${mine.handle}`);
+  out.mentions = [];
+  for (const m of s.matchAll(/(^|\s)@([\w.+-]+)/g)) { const p = resolveHandle(m[2], people); if (p && !out.mentions.includes(p.email)) out.mentions.push(p.email); }
+  out.spoc = out.mentions[0] || '';
+  out.title = s.replace(/\s+/g, ' ').trim().replace(/\s+(by|on|at|due)$/i, '');
+  return out;
+}
+
+// ---------- remote
+const Remote = {
+  token: '',
+  async post(url, body) {
+    let res;
+    try { res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) }); }
+    catch (e) { const x = new Error('Can\'t reach the server. Check your connection.'); x.code = 'NET'; throw x; }
+    const j = await res.json().catch(() => ({ ok: false, error: 'The server sent an unexpected reply. Check the backend URL.' }));
+    if (!j.ok) { const e = new Error(j.error || 'Request failed.'); e.code = j.code; throw e; }
+    return j.data;
+  },
+  call(action, payload) { return this.post(CONFIG.API_URL, { action, payload, token: this.token }); },
+};
+
+// ---------- demo backend (sample data in this browser; used only by the demo link)
+const DemoBackend = (() => {
+  const KEY = 'tutodesk.demo.v3';
+  const ME = 'you@pw.live', R = 'riya@pw.live', K = 'kabir@pw.live';
+  const CATS = ['Work', 'Meetings', 'Follow-ups', PERSONAL];
+  const PREFS0 = { callAlerts: true, newCalls: true, digest: true, overdue: true, assign: true, tagged: true, actionItems: true };
+  let mem = null;
+  const clone = x => JSON.parse(JSON.stringify(x));
+  const at = (off, h, m) => { const d = addDays(new Date(), off); d.setHours(h, m, 0, 0); return d; };
+  const handleOf = (db, e) => norm((db.users.find(u => u.email === e) || { name: e }).name.split(' ')[0]);
+  const team = db => db.users.map(u => u.email);
+  const mentions = (db, text) => {
+    const out = [], emails = team(db);
+    for (const m of String(text).matchAll(/(^|\s)@([\w.+-]+)/g)) {
+      const h = m[2].toLowerCase();
+      const e = emails.find(x => x.split('@')[0] === h) || emails.find(x => handleOf(db, x) === h);
+      if (e && !out.includes(e)) out.push(e);
+    }
+    return out;
+  };
+  function seed() {
+    const now = new Date(), d = n => ymd(addDays(now, n));
+    let n = 0;
+    const T = (title, due, dueTime, priority, category, spoc, status = 'todo', by = ME) => ({
+      id: 't_demo' + (++n), title, notes: '', due, dueTime, priority, category, spoc, tags: [], status,
+      createdBy: by, createdAt: new Date(+now - n * 5400e3).toISOString(), updatedAt: now.toISOString(),
+      completedAt: status === 'done' ? new Date(+now - n * 3600e3).toISOString() : '', source: '' });
+    const users = [{ email: ME, name: 'Veronica Singh', phone: '', prefs: { ...PREFS0 }, ical: 'demo' }, { email: R, name: 'Riya Mehta' }, { email: K, name: 'Kabir Das' }];
+    const tasks = [
+      T('Map ICSE Class 10 Maths to the topic graph', d(0), '17:00', 'high', 'Work', ME, 'doing'),
+      T('Board-expansion deck to leadership, review with @riya', d(-1), '', 'high', 'Follow-ups', ME),
+      T('@riya draft parent FAQ for ICSE launch', d(3), '', 'medium', 'Work', R, 'todo', R),
+      T('@kabir check 40 Physics answers for hallucinations', d(0), '', 'high', 'Work', K, 'doing'),
+      T('QA scorecard for standup', d(1), '10:00', 'medium', 'Meetings', ME),
+      T('TTS latency numbers from vendor, loop in @kabir', d(0), '', 'medium', 'Follow-ups', ME),
+      T('Dentist appointment', d(2), '', 'low', PERSONAL, ''),
+      T('Renew passport', d(6), '', 'medium', PERSONAL, ''),
+      T('Send standup notes', d(-1), '', 'low', 'Meetings', ME, 'done'),
+    ];
+    const db = { users };
+    tasks.forEach(t => { if (t.category !== PERSONAL) t.tags = mentions(db, t.title); });
+    const ev = (id, title, start, mins, attendees) => ({ id, title, start: start.toISOString(), end: new Date(+start + mins * 60e3).toISOString(), allDay: false, attendees, location: 'Google Meet' });
+    const mon = startOfWeek(now), events = [];
+    for (let i = 0; i < 5; i++) { const s = addDays(mon, i); s.setHours(10, 0, 0, 0); events.push(ev('e_su' + i, 'Tuto standup', s, 15, [ME, R, K])); }
+    const rv = new Date(+now - 55 * 60e3);
+    events.push(ev('e_rv', 'Content review with SMEs', rv, 35, [ME, R, K]));
+    events.push(ev('e_ic', 'ICSE mapping walkthrough', at(1, 15, 0), 45, [ME, R]));
+    return {
+      users, tasks, events,
+      comments: [{ id: 'c_1', taskId: 't_demo1', author: R, text: 'Probability needs a second pass. @veronica can you take stats?', createdAt: new Date(+now - 3 * 3600e3).toISOString() }],
+      prompts: [{ id: 'prompt:e_rv', email: ME, title: 'Content review with SMEs', endedAt: new Date(+rv + 35 * 60e3).toISOString(), attendees: [ME, R, K], status: 'pending' }],
+      notifications: [{ id: 'n_1', kind: 'tagged', email: ME, text: 'Riya Mehta on "Map ICSE Class 10 Maths…":\nProbability needs a second pass. @veronica can you take stats?', status: 'logged', createdAt: new Date(+now - 3 * 3600e3).toISOString() }],
+    };
+  }
+  const load = () => (mem = mem || store.get(KEY, null) || seed());
+  const save = () => store.set(KEY, mem);
+  const canSee = t => t.category !== PERSONAL || t.createdBy === ME;
+  const nameOf = (db, e) => (db.users.find(u => u.email === e) || { name: e.split('@')[0] }).name;
+  const meOut = db => { const u = db.users[0]; return { email: ME, name: u.name, picture: '', phone: u.phone, prefs: { ...PREFS0, ...u.prefs }, calendar: !!u.ical, calSource: 'google' }; };
+  const push = (db, kind, email, text) => db.notifications.push({ id: newId('n'), kind, email, text, status: 'logged', createdAt: new Date().toISOString() });
+  const fail = m => { throw new Error(m); };
+  function upsert(db, t) {
+    const prev = db.tasks.find(x => x.id === t.id);
+    const title = String(t.title || '').trim(); if (!title) fail('Add a title.');
+    const personal = t.category === PERSONAL;
+    if (personal && prev && prev.createdBy !== ME) fail('Only the creator can make a task Personal.');
+    const spoc = personal ? '' : String(t.spoc || '');
+    const tags = personal ? [] : mentions(db, title + ' ' + (t.notes || ''));
+    const now = new Date().toISOString();
+    const rec = { ...(prev || {}), ...t, title, spoc, tags, priority: PW[t.priority] != null ? t.priority : 'medium', category: CATS.includes(t.category) ? t.category : 'Work',
+      createdBy: prev ? prev.createdBy : ME, createdAt: prev ? prev.createdAt : now, updatedAt: now, completedAt: t.status === 'done' ? (prev && prev.completedAt) || now : '' };
+    if (prev) Object.assign(prev, rec); else db.tasks.push(rec);
+    if (spoc && spoc !== ME && (!prev || prev.spoc !== spoc)) push(db, 'assign', spoc, `${nameOf(db, ME)} made you SPOC:\n${title}`);
+    return clone(rec);
+  }
+  async function call(action, p) {
+    await new Promise(r => setTimeout(r, 60));
+    const db = load();
+    switch (action) {
+      case 'bootstrap': {
+        const tasks = db.tasks.filter(canSee), ids = new Set(tasks.map(t => t.id)), nowIso = new Date().toISOString();
+        return clone({ me: meOut(db), users: db.users.map(u => ({ email: u.email, name: u.name, picture: '', joined: true })), tasks,
+          comments: db.comments.filter(c => ids.has(c.taskId)), prompts: db.prompts.filter(x => x.status === 'pending'),
+          notifications: db.notifications.filter(x => x.email === ME && x.createdAt <= nowIso).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)), categories: CATS });
+      }
+      case 'saveTask': { const r = upsert(db, p.task); save(); return r; }
+      case 'saveTasks': { const out = p.tasks.map(t => upsert(db, t)); const pr = db.prompts.find(x => x.id === p.promptId); if (pr) pr.status = 'done'; save(); return out; }
+      case 'deleteTask': db.tasks = db.tasks.filter(t => t.id !== p.id); db.comments = db.comments.filter(c => c.taskId !== p.id); save(); return { id: p.id };
+      case 'addComment': { const text = String(p.text || '').trim(); if (!text) fail('Write something first.'); const c = { id: newId('c'), taskId: p.taskId, author: ME, text, createdAt: new Date().toISOString() }; db.comments.push(c); save(); return clone(c); }
+      case 'saveProfile': { const u = db.users[0]; Object.assign(u, { name: String(p.name || u.name).trim() || u.name, phone: p.phone, prefs: { ...u.prefs, ...p.prefs } }); if (typeof p.ical === 'string') u.ical = p.ical; save(); return meOut(db); }
+      case 'calendar': return clone(db.events.filter(e => e.start < p.to && e.end > p.from));
+      case 'resolvePrompt': { const pr = db.prompts.find(x => x.id === p.id); if (pr) pr.status = p.status; save(); return { id: p.id }; }
+      case 'testNotify': push(db, 'test', ME, 'TUTO Desk test. Nudges will land here.'); save(); return { ok: true };
+      case 'signOut': return { ok: true };
+      case 'disconnectCalendar': { db.users[0].ical = ''; save(); return meOut(db); }
+    }
+    fail('Unknown action.');
+  }
+  return { call, reset() { mem = seed(); save(); } };
+})();
+
+// ---------- app
+function tutoDesk() {
+  return {
+    demo: DEMO, apiReady: DEMO || /^https:\/\//.test(CONFIG.API_URL), needSignIn: false, offline: false,
+    native: !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()),
+    googleReady: false, installEvt: null, backend: DEMO ? DemoBackend : Remote,
+    signin: { email: '', code: '', sent: false, busy: false, error: '', ready: false, useCode: false },
+    gcfg: null, codeClient: null, codeMode: 'signin',
+    me: null, users: [], tasks: [], comments: [], prompts: [], notifications: [], events: [],
+    categories: ['Work', 'Meetings', 'Follow-ups', PERSONAL],
+    space: store.get('tutodesk.space', 'team'), filter: 'active', quick: '', q: '', view: store.get('tutodesk.view', 'list'),
+    day: ymd(new Date()), loadedWeek: '', now: new Date(),
+    compose: null, drawer: null, settings: null, actions: null, bell: false,
+    focus: { on: false, task: null, mode: 'focus', left: 1500, total: 1500, running: false },
+    toasts: [], lingering: {}, dragId: null, dragOver: '', timer: null,
+    theme: store.get('tutodesk.theme', ''), bellSeen: store.get('tutodesk.bellSeen', ''),
+    KIND, PREFS, PERSONAL, fmtDue, isOverdue,
+
+    async init() {
+      if (this.theme) document.documentElement.setAttribute('data-theme', this.theme);
+      setInterval(() => { this.now = new Date(); }, 20000);
+      document.addEventListener('keydown', e => this.onKey(e));
+      this.$watch('day', () => this.loadWeek());
+      this.setupApp();
+      if (this.demo) return this.boot();
+      const sess = store.get('tutodesk.session', '');
+      if (sess && this.apiReady) { Remote.token = sess; const c = store.get('tutodesk.cache', null); if (c) this.absorb(c); this.boot(); }
+      else { this.needSignIn = true; this.prepSignIn(); }
+      setInterval(() => { if (!document.hidden && this.me && !this.needSignIn) this.refresh(true); }, 30000);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden && this.me && !this.needSignIn) this.refresh(true); });
+    },
+    async boot() {
+      await this.refresh();
+      if (!this.me) return;
+      this.loadWeek(true); this.openFromUrl();
+      if (!this.demo && !this.me.calendar) this.loadGIS().catch(() => {});
+    },
+    openFromUrl() {
+      try {
+        const u = new URL(location.href), t = u.searchParams.get('task');
+        const task = t && this.tasks.find(x => x.id === t);
+        if (task) { this.space = task.category === PERSONAL ? 'personal' : 'team'; this.openTask(task); }
+        if (u.searchParams.get('new')) this.openCompose();
+      } catch (e) {}
+    },
+
+    // ---- sign in
+    async loadConfig() {
+      if (this.gcfg || this.demo || !this.apiReady) return this.gcfg;
+      try { this.gcfg = await Remote.call('config'); }
+      catch (e) {
+        if (this.needSignIn) this.signin.error = e.code === 'NET' ? e.message : 'The backend isn\'t ready yet. Veronica: finish setup step 1.';
+        return null;
+      }
+      return this.gcfg;
+    },
+    async loadGIS() {
+      if (this.codeClient) return true;
+      const cfg = await this.loadConfig();
+      if (!cfg || !cfg.google || this.native) return false;
+      await new Promise((res, rej) => {
+        if (window.google && google.accounts && google.accounts.oauth2) return res();
+        const s = document.createElement('script');
+        s.src = 'https://accounts.google.com/gsi/client'; s.async = true; s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+      this.codeClient = google.accounts.oauth2.initCodeClient({
+        client_id: cfg.clientId, scope: cfg.scopes, ux_mode: 'popup',
+        callback: r => this.onGoogleCode(r),
+        error_callback: e => { this.signin.busy = false; if (e && e.type !== 'popup_closed') this.toast('The Google window was blocked. Allow pop-ups and try again.'); },
+      });
+      this.googleReady = true;
+      return true;
+    },
+    async prepSignIn() { this.signin.ready = false; try { await this.loadGIS(); } catch (e) {} this.signin.ready = true; },
+    googleSignIn() {
+      if (!this.codeClient) return;
+      this.codeMode = 'signin'; this.signin.busy = true; this.signin.error = '';
+      this.codeClient.requestCode();
+    },
+    async connectCalendar() {
+      if (this.demo) return this.toast('Demo: the calendar is already connected.');
+      if (!this.codeClient) {
+        const ok = await this.loadGIS().catch(() => false);
+        return this.toast(ok ? 'Ready. Tap once more to open Google.' : 'Google sign-in isn\'t set up yet (setup step 2).');
+      }
+      this.codeMode = 'connect';
+      this.codeClient.requestCode();
+    },
+    async onGoogleCode(r) {
+      if (!r || !r.code) { this.signin.busy = false; return; }
+      if (this.codeMode === 'signin') {
+        try { this.startSession(await Remote.call('googleCode', { code: r.code, device: this.device() })); }
+        catch (e) { this.signin.error = e.message; this.signin.busy = false; }
+        return;
+      }
+      try { this.me = await this.api('connectCalendar', { code: r.code }); this.settings = null; this.toast('Calendar connected'); this.loadWeek(true); }
+      catch (e) { this.toast(e.message); }
+    },
+    async disconnectCal() {
+      try { this.me = await this.api('disconnectCalendar'); this.settings = null; this.events = []; this.toast('Calendar disconnected'); }
+      catch (e) { this.toast(e.message); }
+    },
+    device() { return this.native ? 'Android app' : this.standalone ? 'Home-screen app' : 'Browser'; },
+    startSession(d) { Remote.token = d.session; store.set('tutodesk.session', d.session); this.needSignIn = false; this.signin = { email: '', code: '', sent: false, busy: false, error: '', ready: true, useCode: false }; this.boot(); },
+    async codeStep() {
+      const s = this.signin; s.error = '';
+      if (!s.sent && !EMAIL_RE.test(s.email.trim())) { s.error = 'Enter your email address.'; return; }
+      if (s.sent && !/^\d{6}$/.test(s.code.trim())) { s.error = 'Enter the 6 digits from the email.'; return; }
+      s.busy = true;
+      try {
+        if (!s.sent) { await Remote.call('sendCode', { email: s.email.trim() }); s.sent = true; }
+        else this.startSession(await Remote.call('verifyCode', { email: s.email.trim(), code: s.code.trim(), device: this.device() }));
+      } catch (e) { s.error = e.message; }
+      s.busy = false;
+    },
+    async signOut() {
+      try { await this.api('signOut'); } catch (e) {}
+      store.del('tutodesk.session'); store.del('tutodesk.cache');
+      try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+      location.reload();
+    },
+
+    // ---- installable app
+    setupApp() {
+      const hosted = /^https?:$/.test(location.protocol) && window.top === window && !this.native;
+      if (hosted && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+      window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); this.installEvt = e; });
+      window.addEventListener('appinstalled', () => { this.installEvt = null; this.toast('Installed'); });
+    },
+    get standalone() { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; },
+    get isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); },
+    get canInstall() { return !this.native && !this.standalone && window.top === window && (!!this.installEvt || this.isIOS); },
+    async install() {
+      if (this.installEvt) { this.installEvt.prompt(); await this.installEvt.userChoice.catch(() => {}); this.installEvt = null; }
+      else this.toast('Tap Share, then Add to Home Screen');
+    },
+
+    // ---- data
+    async api(action, payload) {
+      try { return await this.backend.call(action, payload || {}); }
+      catch (e) { if (e.code === 'AUTH' && !this.demo) { store.del('tutodesk.session'); this.me = null; this.needSignIn = true; this.prepSignIn(); } throw e; }
+    },
+    async refresh(quiet) {
+      try { const d = await this.api('bootstrap'); this.absorb(d); this.offline = false; if (!this.demo) store.set('tutodesk.cache', d); }
+      catch (e) { if (e.code === 'NET') this.offline = true; if (!quiet && e.code !== 'AUTH') this.toast(e.message); }
+    },
+    absorb(d) {
+      Object.assign(this, { me: d.me, users: d.users, tasks: d.tasks, comments: d.comments || [], prompts: d.prompts || [], notifications: d.notifications || [] });
+      if (d.categories) this.categories = d.categories;
+    },
+    async loadWeek(force) {
+      const from = startOfWeek(parseYmd(this.day)), key = ymd(from);
+      if (!force && key === this.loadedWeek) return;
+      this.loadedWeek = key;
+      const range = { from: from.toISOString(), to: addDays(from, 7).toISOString() };
+      try {
+        this.events = this.me && this.me.calendar ? await this.api('calendar', range) : [];
+      } catch (e) { this.events = []; if (e.code === 'CAL') this.toast(e.message); }
+    },
+    resetDemo() { DemoBackend.reset(); this.quick = ''; this.boot(); this.toast('Demo reset'); },
+
+    // ---- people
+    person(email) { return this.users.find(u => u.email === email) || { email, name: String(email || '?').split('@')[0], joined: false }; },
+    handle(email) {
+      const first = norm(this.person(email).name.split(' ')[0]);
+      const clash = this.users.filter(u => norm(u.name.split(' ')[0]) === first).length > 1;
+      return first && !clash ? first : String(email).split('@')[0].toLowerCase();
+    },
+    get people() { return this.users.map(u => ({ ...u, handle: this.handle(u.email) })); },
+    rich(text) { return esc(text || '').replace(/(^|\s)@([\w.+-]+)/g, (m, sp, h) => resolveHandle(h, this.people) ? `${sp}<span class="mention">@${h}</span>` : m); },
+    faces(t) { return [...new Set([t.spoc, ...(t.tags || [])].filter(Boolean))].slice(0, 3); },
+    isMine(t) { const e = this.me.email; return t.spoc === e || (!t.spoc && t.createdBy === e) || (t.tags || []).includes(e); },
+    avStyle(email) { let h = 0; for (const c of String(email)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return `background: rgb(var(--${AV_COLORS[h % AV_COLORS.length]}))`; },
+    catStyle(c) { return `background: rgb(var(--${CAT_COLOR[c] || 'blue'}))`; },
+    initials(n) { return String(n || '?').split(/[\s._-]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join(''); },
+    commentsFor(id) { return this.comments.filter(c => c.taskId === id).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)); },
+    commentCount(id) { return this.comments.filter(c => c.taskId === id).length; },
+
+    // ---- spaces
+    inSpace(t, sp) { return (sp || this.space) === 'personal' ? t.category === PERSONAL : t.category !== PERSONAL; },
+    openIn(sp) { return this.tasks.filter(t => this.inSpace(t, sp) && t.status !== 'done').length; },
+    get spaceTasks() { return this.tasks.filter(t => this.inSpace(t)); },
+    setSpace(sp) { this.space = sp; this.quick = ''; store.set('tutodesk.space', sp); },
+
+    // ---- header, stats, day
+    get greeting() { return `Hi, ${this.me.name.split(' ')[0]}`; },
+    get summary() {
+      const end = ymd(addDays(startOfWeek(this.now), 6));
+      const n = this.tasks.filter(t => t.status !== 'done' && this.isMine(t) && t.due && t.due <= end).length;
+      return n ? `${n} task${n === 1 ? '' : 's'} on you this week` : 'Nothing on you this week';
+    },
+    get stats() {
+      const today = ymd(this.now), open = this.spaceTasks.filter(t => t.status !== 'done');
+      const ico = p => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+      const third = this.space === 'team'
+        ? { key: 'tagged', label: 'Tagged you', color: 'blue', n: open.filter(t => (t.tags || []).includes(this.me.email)).length, icon: ico('<circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/>') }
+        : { key: 'late', label: 'Overdue', color: 'blue', n: open.filter(isOverdue).length, icon: ico('<path d="M12 8v5M12 16.5h.01"/><circle cx="12" cy="12" r="9"/>') };
+      return [
+        { key: 'today', label: 'Due today', color: 'lilac', n: open.filter(t => this.isMine(t) && t.due && t.due <= today).length, icon: ico('<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>') },
+        { key: 'high', label: 'High priority', color: 'orange', n: open.filter(t => t.priority === 'high').length, icon: ico('<path d="M12 5v9M12 19h.01"/>') },
+        third,
+      ];
+    },
+    get strip() {
+      const s = startOfWeek(parseYmd(this.day)), today = ymd(this.now);
+      return [...Array(7)].map((_, i) => {
+        const d = addDays(s, i), key = ymd(d);
+        return { key, n: d.getDate(), dow: DAYS[d.getDay()].slice(0, 2), isToday: key === today, label: `${DAYS_LONG[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`,
+                 busy: this.tasks.some(t => t.due === key && t.status !== 'done' && this.isMine(t)) || this.events.some(e => !e.allDay && ymd(new Date(e.start)) === key) };
+      });
+    },
+    get dayTitle() { const d = parseYmd(this.day); return (this.day === ymd(this.now) ? 'Today' : DAYS_LONG[d.getDay()]) + `, ${d.getDate()} ${MONTHS[d.getMonth()]}`; },
+    get dayCalls() { return this.events.filter(e => !e.allDay && ymd(new Date(e.start)) === this.day).sort((a, b) => (a.start < b.start ? -1 : 1)); },
+    get dayTasks() {
+      const isToday = this.day === ymd(this.now);
+      return this.tasks.filter(t => this.isMine(t) && (t.status !== 'done' || this.lingering[t.id]) &&
+        (t.due === this.day || (isToday && t.due && t.due < this.day))).sort(byDue);
+    },
+    shiftWeek(n) { this.day = ymd(addDays(parseYmd(this.day), 7 * n)); },
+
+    // ---- browse
+    get scoped() {
+      let ts = this.spaceTasks;
+      const today = ymd(this.now);
+      if (this.quick === 'today') ts = ts.filter(t => this.isMine(t) && t.due && t.due <= today);
+      if (this.quick === 'high') ts = ts.filter(t => t.priority === 'high');
+      if (this.quick === 'tagged') ts = ts.filter(t => (t.tags || []).includes(this.me.email));
+      if (this.quick === 'late') ts = ts.filter(isOverdue);
+      const words = this.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      return ts.filter(t => words.every(w => {
+        if (w.startsWith('@') && w.length > 1) { const h = w.slice(1); return [t.spoc, ...(t.tags || [])].some(e => e && (this.handle(e).startsWith(h) || e.startsWith(h))); }
+        if (w.startsWith('#') && w.length > 1) return norm(t.category).startsWith(norm(w));
+        return (t.title + ' ' + (t.notes || '')).toLowerCase().includes(w);
+      }));
+    },
+    get counts() { const d = this.scoped.filter(t => t.status === 'done').length; return { all: this.scoped.length, active: this.scoped.length - d, done: d }; },
+    get browse() {
+      let ts = this.scoped;
+      if (this.filter === 'active') ts = ts.filter(t => t.status !== 'done' || this.lingering[t.id]);
+      if (this.filter === 'done') ts = ts.filter(t => t.status === 'done');
+      return [...ts].sort((a, b) => ((a.status === 'done') - (b.status === 'done')) || (this.filter === 'done' ? (a.completedAt < b.completedAt ? 1 : -1) : byDue(a, b)));
+    },
+    get board() { const ts = [...this.scoped].sort(byDue); return [['todo', 'To do', 'blue'], ['doing', 'Doing', 'lilac'], ['done', 'Done', 'orange']].map(([key, title, color]) => ({ key, title, color, tasks: ts.filter(t => t.status === key) })); },
+    setView(v) { this.view = v; store.set('tutodesk.view', v); },
+
+    // ---- @ / ! suggestions
+    suggest(text) {
+      const m = String(text || '').match(/(^|\s)([@!])([\w.+-]*)$/);
+      if (!m) return [];
+      const k = m[3].toLowerCase();
+      if (m[2] === '@') return this.people.filter(p => p.handle.startsWith(k) || p.email.startsWith(k)).slice(0, 5)
+        .map(p => ({ label: (p.email === this.me.email ? 'Me' : p.name.split(' ')[0]) + ' @' + p.handle, insert: '@' + p.handle }));
+      if (this.compose) return ['high', 'medium', 'low'].filter(p => p.startsWith(k)).map(p => ({ label: this.cap(p), insert: '!' + p }));
+      return [];
+    },
+    pick(text, s) { return String(text).replace(/([@#!])([\w.+-]*)$/, s.insert) + ' '; },
+    cap(s) { return s ? s[0].toUpperCase() + s.slice(1) : ''; },
+
+    // ---- compose
+    openCompose() {
+      this.compose = { text: '', category: this.space === 'personal' ? PERSONAL : 'Work', spoc: '', due: this.day !== ymd(this.now) ? this.day : '', dueTime: '', priority: '', more: false, busy: false };
+      this.$nextTick(() => this.$refs.ctext && this.$refs.ctext.focus());
+    },
+    get cp() {
+      if (!this.compose) return {};
+      const c = this.compose, p = parseQuick(c.text, this.people, this.me.email, this.categories, this.now);
+      return { title: p.title, category: p.category, due: c.due || p.due || '', dueTime: c.dueTime || p.dueTime || '', priority: c.priority || p.priority || '', spoc: c.spoc || p.spoc || '' };
+    },
+    async addCompose() {
+      const c = this.compose, p = this.cp;
+      if (!c || !c.text.trim() || !p.title || c.busy) return;
+      const category = p.category || c.category;
+      const t = { id: newId('t'), title: p.title, notes: '', due: p.due, dueTime: p.dueTime, priority: p.priority || 'medium', category,
+                  spoc: category === PERSONAL ? '' : p.spoc, tags: [], status: 'todo', createdBy: this.me.email, createdAt: new Date().toISOString(), completedAt: '', source: '' };
+      this.compose = null;
+      this.space = category === PERSONAL ? 'personal' : 'team';
+      if (await this.persist(t)) this.toast(category === PERSONAL ? 'Added to Personal' : 'Added');
+    },
+
+    // ---- mutations (optimistic)
+    async persist(t) {
+      const cur = this.tasks.find(x => x.id === t.id), before = cur ? { ...cur } : null;
+      if (cur) Object.assign(cur, t); else this.tasks.unshift({ ...t });
+      try {
+        const saved = await this.api('saveTask', { task: t });
+        const live = this.tasks.find(x => x.id === t.id); if (live) Object.assign(live, saved);
+        const had = before ? [before.spoc, ...(before.tags || [])] : [];
+        const pinged = [...new Set([saved.spoc, ...(saved.tags || [])])].filter(e => e && e !== this.me.email && !had.includes(e));
+        if (pinged.length) this.toast(`Nudged ${pinged.map(e => '@' + this.handle(e)).join(', ')}`);
+        return saved;
+      } catch (e) {
+        if (before) Object.assign(this.tasks.find(x => x.id === t.id) || {}, before); else this.tasks = this.tasks.filter(x => x.id !== t.id);
+        this.toast(e.message);
+      }
+    },
+    toggleDone(t) {
+      const orig = { ...t }, done = t.status !== 'done';
+      if (done) { this.lingering[t.id] = true; setTimeout(() => { delete this.lingering[t.id]; }, 1400); this.toast('Done', () => this.persist(orig)); }
+      this.persist({ ...t, status: done ? 'done' : 'todo' });
+    },
+    async deleteTask(t) {
+      const i = this.tasks.findIndex(x => x.id === t.id); if (i < 0) return;
+      const copy = { ...this.tasks[i] };
+      this.tasks.splice(i, 1); this.drawer = null;
+      try { await this.api('deleteTask', { id: t.id }); this.toast('Deleted', () => this.persist(copy)); }
+      catch (e) { this.tasks.splice(i, 0, copy); this.toast(e.message); }
+    },
+    onDragStart(e, t) { this.dragId = t.id; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', t.id); },
+    onDrop(col) {
+      const t = this.tasks.find(x => x.id === this.dragId); this.dragOver = ''; this.dragId = null;
+      if (!t || t.status === col) return;
+      if (col === 'done') this.toggleDone(t); else this.persist({ ...t, status: col });
+    },
+
+    // ---- detail
+    openTask(t) { this.drawer = { ...JSON.parse(JSON.stringify(t)), comment: '' }; },
+    closeDrawer() { this.drawer = null; try { const u = new URL(location.href); if (u.searchParams.has('task')) { u.searchParams.delete('task'); history.replaceState(null, '', u); } } catch (e) {} },
+    async saveDrawer() {
+      const d = this.drawer; if (!d.title.trim()) return this.toast('Add a title.');
+      if (d.comment && d.comment.trim()) await this.sendComment();
+      const { comment, ...task } = d;
+      if (task.category === PERSONAL) task.spoc = '';
+      this.closeDrawer();
+      if (await this.persist(task)) this.toast('Saved');
+    },
+    async sendComment() {
+      const d = this.drawer; const text = (d.comment || '').trim(); if (!text) return;
+      d.comment = '';
+      try { const c = await this.api('addComment', { taskId: d.id, text }); this.comments.push(c); }
+      catch (e) { d.comment = text; this.toast(e.message); }
+    },
+    focusFromDrawer() { const t = this.tasks.find(x => x.id === this.drawer.id); this.closeDrawer(); if (t) this.startFocus(t); },
+    async copy(text) { try { await navigator.clipboard.writeText(text); this.toast('Copied'); } catch (e) { this.toast('Copy blocked. Select and copy manually.'); } },
+
+    // ---- settings & nudges
+    openSettings() { this.settings = { name: this.me.name, phone: this.me.phone || '', ical: '', prefs: { ...this.me.prefs }, error: '', busy: false }; },
+    async saveSettings() {
+      const s = this.settings, digits = s.phone.replace(/[^\d]/g, '');
+      if (s.phone.trim() && (digits.length < 10 || digits.length > 15)) { s.error = 'Add the country code, e.g. +91 98765 43210.'; return; }
+      const payload = { name: s.name, phone: s.phone, prefs: s.prefs };
+      const calChanged = !!s.ical.trim();
+      if (calChanged) payload.ical = s.ical.trim();
+      s.busy = true;
+      try {
+        this.me = await this.api('saveProfile', payload); this.settings = null;
+        this.toast(calChanged ? (this.me.calendar ? 'Calendar connected' : 'Calendar disconnected') : 'Saved');
+        if (calChanged) this.loadWeek(true);
+      } catch (e) { s.error = e.message; }
+      s.busy = false;
+    },
+    async testWhatsApp() { try { await this.api('testNotify'); await this.refresh(true); this.toast('Test sent. Check the bell.'); } catch (e) { this.toast(e.message); } },
+    get unread() { return this.notifications.some(n => n.createdAt > this.bellSeen); },
+    openBell() { this.bell = !this.bell; if (this.bell) { this.bellSeen = new Date().toISOString(); store.set('tutodesk.bellSeen', this.bellSeen); } },
+    statusLabel(s) {
+      if (!s) return '';
+      if (s.startsWith('logged')) return 'Preview · WhatsApp not connected yet';
+      if (s.startsWith('sent')) return 'Sent';
+      if (s.startsWith('no-phone')) return 'Not sent · add your number in Settings';
+      return 'Failed · ' + s.replace(/^failed:\s*/, '');
+    },
+
+    // ---- call notes
+    openActions(src) {
+      this.actions = { promptId: String(src.id || '').startsWith('prompt:') ? src.id : '', title: src.title, text: '', error: '' };
+      this.$nextTick(() => this.$refs.aiText && this.$refs.aiText.focus());
+    },
+    get actionItems() {
+      if (!this.actions) return [];
+      return this.actions.text.split('\n').map(s => s.replace(/^\s*(?:[-*•]|\d+[.)])\s*/, '').trim()).filter(Boolean)
+        .map(l => parseQuick(l, this.people, this.me.email, this.categories, this.now)).filter(p => p.title);
+    },
+    async submitActions() {
+      const a = this.actions, items = this.actionItems; if (!items.length) return;
+      const tasks = items.map(p => ({ id: newId('t'), title: p.title, notes: 'From: ' + a.title, due: p.due || '', dueTime: p.dueTime || '',
+        priority: p.priority || 'medium', category: 'Meetings', spoc: p.spoc || '', status: 'todo', source: 'meeting' }));
+      try {
+        const saved = await this.api('saveTasks', { tasks, promptId: a.promptId });
+        this.tasks.unshift(...saved); this.prompts = this.prompts.filter(p => p.id !== a.promptId); this.actions = null; this.space = 'team';
+        this.toast(`${saved.length} added`);
+      } catch (e) { a.error = e.message; }
+    },
+    async dismissPrompt(p) { this.prompts = this.prompts.filter(x => x.id !== p.id); try { await this.api('resolvePrompt', { id: p.id, status: 'dismissed' }); } catch (e) {} },
+
+    // ---- focus
+    startFocus(t) {
+      clearInterval(this.timer);
+      this.focus = { on: true, task: t, mode: 'focus', left: 1500, total: 1500, running: true };
+      this.timer = setInterval(() => {
+        const f = this.focus; if (!f.running) return;
+        if (--f.left <= 0) { this.chime(); Object.assign(f, f.mode === 'focus' ? { mode: 'break', left: 300, total: 300 } : { mode: 'focus', left: 1500, total: 1500 }); }
+        document.title = `${this.mmss(f.left)} · ${f.mode === 'focus' ? 'Focus' : 'Break'}`;
+      }, 1000);
+    },
+    stopFocus() { clearInterval(this.timer); this.focus.on = false; this.focus.running = false; document.title = BASE_TITLE; },
+    focusDone() { const t = this.tasks.find(x => x.id === this.focus.task.id); this.stopFocus(); if (t && t.status !== 'done') this.toggleDone(t); },
+    chime() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [660, 880].forEach((f, i) => { const o = ctx.createOscillator(), g = ctx.createGain(), t0 = ctx.currentTime + i * .18;
+          o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+          g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(.2, t0 + .02); g.gain.exponentialRampToValueAtTime(.0001, t0 + .5); o.start(t0); o.stop(t0 + .55); });
+      } catch (e) {}
+    },
+
+    // ---- theme & keys
+    get isDark() { const a = document.documentElement.getAttribute('data-theme'); return this.theme ? this.theme === 'dark' : a ? a === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; },
+    toggleTheme() { this.theme = this.isDark ? 'light' : 'dark'; store.set('tutodesk.theme', this.theme); document.documentElement.setAttribute('data-theme', this.theme); },
+    onKey(e) {
+      if (e.key === 'Escape') { if (this.focus.on) return this.stopFocus(); this.compose = null; this.drawer = null; this.settings = null; this.actions = null; this.bell = false; return; }
+      const el = e.target;
+      if (/^(input|textarea|select)$/i.test(el.tagName || '') || el.isContentEditable || e.metaKey || e.ctrlKey || e.altKey || !this.me || this.needSignIn || this.focus.on || this.compose || this.drawer) return;
+      const k = e.key.toLowerCase();
+      if (k === 'n') { e.preventDefault(); this.openCompose(); }
+      else if (k === '/') { e.preventDefault(); this.$refs.search && this.$refs.search.focus(); }
+      else if (k === 't') this.setSpace('team');
+      else if (k === 'p') this.setSpace('personal');
+      else if (k === 'b') this.setView(this.view === 'board' ? 'list' : 'board');
+      else if (k === 'd') this.toggleTheme();
+    },
+
+    // ---- format
+    toast(msg, undo) { const id = Math.random(); this.toasts.push({ id, msg, undo }); if (this.toasts.length > 3) this.toasts.shift(); setTimeout(() => { this.toasts = this.toasts.filter(t => t.id !== id); }, undo ? 5000 : 2600); },
+    fmtClock(iso) { const d = new Date(iso); return fmtHM(hm(d.getHours(), d.getMinutes())); },
+    mmss(s) { return `${pad(Math.floor(s / 60))}:${pad(s % 60)}`; },
+    until(e) { const s = new Date(e.start); if (s <= this.now) return 'Now'; const m = Math.round((s - this.now) / 60000); return m < 60 ? `in ${m}m` : `in ${Math.floor(m / 60)}h`; },
+    relTime(iso) {
+      if (!iso) return ''; const d = new Date(iso), m = Math.round((this.now - d) / 60000);
+      if (m < 1) return 'just now'; if (m < 60) return `${m}m ago`; if (m < 1440 && d.getDate() === this.now.getDate()) return `${Math.floor(m / 60)}h ago`;
+      if (m < 2880) return 'yesterday'; return `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+    },
+  };
+}
+</script>
+</body>
+</html>

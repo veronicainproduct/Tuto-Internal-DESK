@@ -1,0 +1,60 @@
+<title>TUTO Desk Go-Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Quicksand:wght@600;700&display=swap">
+<style>
+  :root { --bg:#EEEEF1; --surface:#FFFFFF; --soft:#F4F4F7; --ink:#1D1B22; --muted:#66647A; --line:#E2E1E8; --blue:#A3B5F7; --lilac:#E7A6F4; --orange:#F3983E; --mint:#9ED9B5; --teal:#15515C; --on:#1D1B22; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --bg:#141318; --surface:#1F1D25; --soft:#28262F; --ink:#F0EEF5; --muted:#A09DAD; --line:#32303A; --blue:#8CA0F0; --lilac:#D694E8; --orange:#EC8C34; --mint:#78C498; --teal:#6EC8D0; } }
+  :root[data-theme="dark"] { color-scheme: dark; --bg:#141318; --surface:#1F1D25; --soft:#28262F; --ink:#F0EEF5; --muted:#A09DAD; --line:#32303A; --blue:#8CA0F0; --lilac:#D694E8; --orange:#EC8C34; --mint:#78C498; --teal:#6EC8D0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 Onest, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 720px; margin: 0 auto; padding-inline: 16px; padding-block: 36px 96px; }
+  h1, h2, .n { font-family: Quicksand, Onest, ui-rounded, system-ui, sans-serif; font-weight: 700; text-wrap: balance; }
+  h1 { font-size: 34px; line-height: 1.1; margin: 0; }
+  .lede { color: var(--muted); margin: 10px 0 0; max-width: 60ch; }
+  .who { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+  .who div { border-radius: 20px; padding: 14px 16px; color: var(--on); }
+  .who b { font-family: Quicksand, sans-serif; font-size: 17px; display: block; }
+  ol.steps { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 10px; }
+  ol.steps > li { background: var(--surface); border-radius: 22px; padding: 16px 18px; display: grid; grid-template-columns: 40px 1fr; gap: 12px; }
+  .n { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--on); font-size: 15px; }
+  .you { background: var(--orange); } .me { background: var(--blue); }
+  li b.t { display: block; font-weight: 600; margin-top: 7px; }
+  .tag { font: 600 11px Onest, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  li p { margin: 6px 0 0; }
+  li ul { margin: 6px 0 0; padding-left: 20px; }
+  li ul li { margin: 3px 0; }
+  .ui { font-weight: 600; background: var(--soft); border: 1px solid var(--line); padding: 1px 7px; border-radius: 7px; font-size: 14.5px; white-space: nowrap; }
+  code { font: 500 13.5px ui-monospace, SFMono-Regular, Consolas, monospace; background: var(--soft); padding: 2px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+  .note { margin-top: 8px; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--mint) 30%, transparent); font-size: 14.5px; }
+  a { color: var(--teal); }
+  @media (max-width: 520px) { .who { grid-template-columns: 1fr; } ol.steps > li { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap">
+  <h1>TUTO Desk go-live</h1>
+  <p class="lede">The app is built and tested. There are 4 short steps left. No scripts, no copy-pasting code. Where a step says "Claude", I run it from here.</p>
+  <div class="who">
+    <div class="you"><b>You</b>Create one free account, click Allow, and fill 2 boxes in Google Cloud.</div>
+    <div class="me"><b>Claude</b>Creates the database, deploys the app, and sets everything else up.</div>
+  </div>
+
+  <ol class="steps">
+    <li><span class="n you">1</span><div><span class="tag">You · 2 min</span><b class="t">Create a free Cloudflare account</b>
+      <p>Go to <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">dash.cloudflare.com/sign-up</a>, sign up with <code>veronica.singh2525@gmail.com</code>, and verify your email. No card needed. Then tell Claude "Cloudflare done".</p></div></li>
+
+    <li><span class="n me">2</span><div><span class="tag">Claude, with one click from you</span><b class="t">Connect and deploy</b>
+      <p>I start the login. A browser tab opens on Cloudflare; click <span class="ui">Allow</span>. I then create the database, upload the app, and send you its address (like <code>tuto-desk.yourname.workers.dev</code>).</p></div></li>
+
+    <li><span class="n you">3</span><div><span class="tag">You · 5 min, in Google Cloud</span><b class="t">Point Google sign-in at the new address</b>
+      <ul>
+        <li><span class="ui">Branding</span>: clear the three App domain links (home page, privacy, terms). Under Authorised domains, replace the entry with the domain I give you. <span class="ui">Save</span>.</li>
+        <li><span class="ui">Clients</span> → <span class="ui">+ Create client</span> → Web application. Under Authorised JavaScript origins, add the app address I give you. <span class="ui">Create</span>.</li>
+        <li>Send me the <b>Client ID</b>; it isn't secret. For the <b>Client secret</b>, click the command I give you in the terminal and paste it there, so it never goes through chat.</li>
+        <li><span class="ui">Audience</span> → <span class="ui">Publish app</span>. If it stays greyed out, click <span class="ui">+ Add users</span> under Test users and add the team's emails instead.</li>
+      </ul></div></li>
+
+    <li><span class="n you">4</span><div><span class="tag">You · 1 min</span><b class="t">Sign in and invite</b>
+      <p>Open the app → <span class="ui">Continue with Google</span> → tap <span class="ui">Turn on</span> for notifications. Then tap your initials → <b>Invite people</b> → <span class="ui">Share</span>, and send the link to the team.</p>
+      <p class="note">Teammates open the link, tap <b>Continue with Google</b>, and tap <b>Turn on</b>. Their calendar and reminders then work automatically. iPhone users first add the app to their Home Screen; the app shows them how.</p></div></li>
+  </ol>
+</div>

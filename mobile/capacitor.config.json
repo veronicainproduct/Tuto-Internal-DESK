@@ -1,0 +1,7 @@
+{
+  "appId": "com.tutodesk.app",
+  "appName": "TUTO Desk",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "android": { "backgroundColor": "#EEEEF1" }
+}

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join TUTO Desk</title>
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Quicksand:wght@600;700&display=swap">
+<style>
+  :root {
+    --bg: #EEEEF1; --surface: #FFFFFF; --soft: #F4F4F7; --ink: #1D1B22; --muted: #66647A; --line: #E2E1E8;
+    --blue: #A3B5F7; --lilac: #E7A6F4; --orange: #F3983E; --plum: #C8BCF2; --mint: #9ED9B5; --teal: #15515C; --on: #1D1B22;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #141318; --surface: #1F1D25; --soft: #28262F; --ink: #F0EEF5; --muted: #A09DAD; --line: #32303A;
+      --blue: #8CA0F0; --lilac: #D694E8; --orange: #EC8C34; --plum: #AE9EE6; --mint: #78C498; --teal: #6EC8D0;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #141318; --surface: #1F1D25; --soft: #28262F; --ink: #F0EEF5; --muted: #A09DAD; --line: #32303A;
+    --blue: #8CA0F0; --lilac: #D694E8; --orange: #EC8C34; --plum: #AE9EE6; --mint: #78C498; --teal: #6EC8D0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 Onest, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: calc(28px + env(safe-area-inset-top, 0px)) 80px; }
+  h1, h2, .num { font-family: Quicksand, Onest, ui-rounded, system-ui, sans-serif; font-weight: 700; text-wrap: balance; }
+  .logo { width: 56px; height: 56px; border-radius: 18px; display: block; }
+  h1 { font-size: 32px; line-height: 1.1; margin: 16px 0 0; }
+  .lede { color: var(--muted); margin: 8px 0 0; }
+  .cta { display: flex; align-items: center; justify-content: center; height: 56px; margin-top: 20px; border-radius: 999px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 17px; }
+  section { margin-top: 18px; background: var(--surface); border-radius: 26px; padding: 20px; scroll-margin-top: 16px; }
+  .head { display: flex; align-items: center; gap: 12px; }
+  .num { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: var(--on); font-size: 18px; flex: none; }
+  h2 { font-size: 21px; margin: 0; flex: 1; }
+  .opt { font-size: 13px; color: var(--muted); font-family: Onest, sans-serif; font-weight: 500; }
+  ol { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; }
+  p { margin: 12px 0 0; }
+  .ui { font-weight: 600; background: var(--soft); border: 1px solid var(--line); padding: 1px 8px; border-radius: 8px; white-space: nowrap; }
+  code { font: 500 14px ui-monospace, SFMono-Regular, Consolas, monospace; background: var(--soft); padding: 2px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .tabs > div { background: var(--soft); border-radius: 18px; padding: 14px 16px; }
+  .tabs b { display: block; margin-bottom: 6px; }
+  .tabs ol { margin-top: 0; padding-left: 18px; font-size: 15.5px; gap: 5px; }
+  .note { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: var(--soft); color: var(--muted); font-size: 15px; }
+  .ok { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: color-mix(in srgb, var(--mint) 32%, transparent); font-size: 15px; }
+  .tips { display: grid; gap: 10px; margin-top: 14px; }
+  .tip { display: grid; grid-template-columns: 112px 1fr; gap: 12px; align-items: baseline; font-size: 15.5px; }
+  .tip code { justify-self: start; }
+  .A { background: var(--lilac); } .B { background: var(--blue); } .C { background: var(--orange); } .D { background: var(--mint); } .E { background: var(--plum); }
+  a { color: var(--teal); }
+  @media (max-width: 520px) { .tabs { grid-template-columns: 1fr; } .tip { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" src="icons/icon-192.png" alt="" width="56" height="56">
+  <h1>Join TUTO Desk</h1>
+  <p class="lede">Our team's to-do app. Just sign in; everything else is set up for you.</p>
+  <a class="cta" href="./">Open TUTO Desk</a>
+
+  <section>
+    <div class="head"><span class="num A">1</span><h2>Sign in</h2></div>
+    <ol>
+      <li>Open <a href="./">tutodesk.netlify.app</a>.</li>
+      <li>Tap <span class="ui">Continue with Google</span> and pick your <b>work</b> Google account.</li>
+      <li>If Google says <b>"Google hasn't verified this app"</b>, tap <span class="ui">Advanced</span>, then <span class="ui">Go to TUTO Desk</span>. It's our own team app.</li>
+      <li>Leave the <b>calendar</b> box ticked and tap <span class="ui">Continue</span>.</li>
+    </ol>
+    <p class="ok">You're in. Your calls, WhatsApp reminders and team tasks are all set up automatically, so there's nothing else to do.</p>
+    <p class="note"><b>"Access blocked" or no Google button?</b> Tap <span class="ui">Use an email code instead</span>, type your work email, and enter the 6-digit code you receive.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num B">2</span><h2>Put it on your phone <span class="opt">· optional</span></h2></div>
+    <div class="tabs">
+      <div><b>iPhone</b>
+        <ol>
+          <li>Open the link in <b>Safari</b>.</li>
+          <li>Tap <span class="ui">Share</span> (square with an arrow).</li>
+          <li>Tap <span class="ui">Add to Home Screen</span>, then <span class="ui">Add</span>.</li>
+        </ol>
+      </div>
+      <div><b>Android</b>
+        <ol>
+          <li>Open the link in <b>Chrome</b>.</li>
+          <li>Tap <span class="ui">⋮</span>, then <span class="ui">Install app</span> (or <span class="ui">Add to Home screen</span>).</li>
+        </ol>
+      </div>
+    </div>
+    <p class="note">Open it from the new orange icon and sign in once more (step 1).</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num C">3</span><h2>How to use it</h2></div>
+    <div class="tips">
+      <div class="tip"><span class="ui" style="justify-self:start">Team / Personal</span><span><b>Team</b> tasks are seen by everyone. <b>Personal</b> tasks are seen only by you.</span></div>
+      <div class="tip"><span class="ui" style="justify-self:start">+</span><span>Add a task. Pick a category; <b>Personal</b> keeps it private.</span></div>
+      <div class="tip"><code>@riya</code><span>Tag someone. The first person tagged becomes the SPOC, and they get a nudge.</span></div>
+      <div class="tip"><code>fri 5pm</code><span>Set a due date and time: <code>today</code>, <code>tomorrow</code>, <code>26 sep</code>, <code>in 3 days</code>.</span></div>
+      <div class="tip"><code>!high</code><span>Mark it High priority.</span></div>
+      <div class="tip"><span class="ui" style="justify-self:start">○</span><span>Tap the circle to complete a task. Tap the task itself to edit, comment or delete it.</span></div>
+      <div class="tip"><span class="ui" style="justify-self:start">Bell</span><span>Every nudge sent to you.</span></div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

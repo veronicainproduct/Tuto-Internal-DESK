@@ -1,0 +1,21 @@
+{
+  // TUTO Desk — one Cloudflare Worker serves the app, the API and the reminders.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tuto-desk",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "tuto-desk", "database_id": "7c2ae4f2-b88f-4e6b-a31d-10b6f6b43904" }
+  ],
+  "triggers": { "crons": ["*/5 * * * *", "0 4 * * *"] },
+  "observability": { "enabled": true },
+  "vars": {
+    "ADMIN_EMAILS": "veronica.singh2525@gmail.com",
+    "ALLOWED_DOMAINS": "",
+    "GOOGLE_CLIENT_ID": "",
+    "TZ_OFFSET_MIN": "330",
+    "VAPID_PUBLIC": "BH2EpZXmFWCdthcqAdCpCL6w9aQ4unDt2y9KjmEo0sXW97yc89P1YB4hzfloN6TAG8CoR8bno-cqcUeQDzuCHKY"
+  }
+  // Secrets (set with: npx wrangler secret put NAME): GOOGLE_CLIENT_SECRET, VAPID_PRIVATE_JWK, INVITE_CODE
+}
